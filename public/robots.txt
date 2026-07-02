@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://karvinpower.com/sitemap.xml
