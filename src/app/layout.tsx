@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import FloatingActions from '@/components/layout/FloatingActions';
+import PageTransition from '@/components/ui/PageTransition';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -99,6 +100,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} ${libreBaskerville.variable} font-sans antialiased text-brand-dark bg-white flex flex-col min-h-screen`}>
+        <PageTransition />
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />
