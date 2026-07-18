@@ -21,7 +21,7 @@ const allCatalogProducts = [
 function ProductsCatalogContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [selectedProductForSpecs, setSelectedProductForSpecs] = useState<any | null>(null);
+  const [selectedProductForSpecs, setSelectedProductForSpecs] = useState<typeof allCatalogProducts[number] | null>(null);
 
   // Get active query states
   const categoryParam = searchParams.get('category') || 'Lighting';
@@ -223,13 +223,13 @@ function ProductsCatalogContent() {
                           <span className="block font-semibold text-brand-dark">
                             {prod.parentCategory === 'Power Products' ? 'Capacity:' : 'Wattage:'}
                           </span>
-                          {(prod.specifications as any)['Capacity Range'] || (prod.specifications as any)['Wattage Range'] || 'N/A'}
+                          {(prod.specifications as Record<string, string | undefined>)['Capacity Range'] || (prod.specifications as Record<string, string | undefined>)['Wattage Range'] || 'N/A'}
                         </div>
                         <div>
                           <span className="block font-semibold text-brand-dark">
                             {prod.parentCategory === 'Power Products' ? 'Protection:' : 'IP Protection:'}
                           </span>
-                          {(prod.specifications as any)['IP Rating'] || (prod.specifications as any)['Environment'] || (prod.parentCategory === 'Power Products' ? 'N/A' : 'IP65')}
+                          {(prod.specifications as Record<string, string | undefined>)['IP Rating'] || (prod.specifications as Record<string, string | undefined>)['Environment'] || (prod.parentCategory === 'Power Products' ? 'N/A' : 'IP65')}
                         </div>
                       </div>
 
@@ -245,7 +245,7 @@ function ProductsCatalogContent() {
                   
                   <div className="px-6 pb-6 pt-4 border-t border-brand-border/40 flex items-center justify-between">
                     <span className="text-[11px] font-display font-bold text-brand-gray">
-                      {prod.parentCategory === 'Power Products' ? 'Efficiency:' : 'Efficacy:'} {(prod.specifications as any)['Efficiency'] || (prod.specifications as any)['Luminous Efficacy'] || 'High Efficacy'}
+                      {prod.parentCategory === 'Power Products' ? 'Efficiency:' : 'Efficacy:'} {(prod.specifications as Record<string, string | undefined>)['Efficiency'] || (prod.specifications as Record<string, string | undefined>)['Luminous Efficacy'] || 'High Efficacy'}
                     </span>
                     <Link
                       href={`/contact?product=${encodeURIComponent(prod.name)}`}

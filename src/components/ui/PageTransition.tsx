@@ -100,7 +100,7 @@ function PageTransitionInner() {
             loadingStartRef.current = Date.now();
             setIsLoading(true);
           }
-        } catch (e) {
+        } catch {
           // Ignore
         }
       }
@@ -120,7 +120,7 @@ function PageTransitionInner() {
             loadingStartRef.current = Date.now();
             setIsLoading(true);
           }
-        } catch (e) {
+        } catch {
           // Ignore
         }
       }

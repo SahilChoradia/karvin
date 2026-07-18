@@ -23,6 +23,16 @@ const industryIcons: Record<string, React.ComponentType<{ className?: string }>>
   'Compass': Compass,
 };
 
+interface CompatProduct {
+  id: string;
+  name: string;
+  category: string;
+  parentCategory: string;
+  description: string;
+  image: string;
+  specifications: Record<string, string | undefined>;
+}
+
 export default function Home() {
   const heroImages = [
     '/images/illuminate-world.png',
@@ -32,7 +42,7 @@ export default function Home() {
   ];
 
   const [heroImageIdx, setHeroImageIdx] = useState(0);
-  const [randomPowerProducts, setRandomPowerProducts] = useState<any[]>([]);
+  const [randomPowerProducts, setRandomPowerProducts] = useState<CompatProduct[]>([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -44,11 +54,11 @@ export default function Home() {
   useEffect(() => {
     // Pick 3 random power products on mount
     const shuffled = [...POWER_PRODUCTS].sort(() => 0.5 - Math.random());
-    setRandomPowerProducts(shuffled.slice(0, 3));
+    setRandomPowerProducts(shuffled.slice(0, 3) as unknown as CompatProduct[]);
   }, []);
 
   const displayedProducts = [
-    ...PRODUCTS.slice(0, 6),
+    ...(PRODUCTS.slice(0, 6) as unknown as CompatProduct[]),
     ...randomPowerProducts
   ];
 
@@ -511,7 +521,7 @@ export default function Home() {
                   </div>
                   <div className="px-6 pb-6 pt-2 flex items-center justify-between border-t border-brand-border/40">
                     <span className="text-xs font-display font-bold text-brand-gray">
-                      {(prod.specifications as any)['Efficiency'] || (prod.specifications as any)['Efficiency (AC Mode)'] || (prod.specifications as any)['Luminous Efficacy'] || 'High Efficacy'}
+                      {prod.specifications['Efficiency'] || prod.specifications['Efficiency (AC Mode)'] || prod.specifications['Luminous Efficacy'] || 'High Efficacy'}
                     </span>
                     <Link href={`/contact?product=${encodeURIComponent(prod.name)}`} className="inline-flex items-center gap-1 text-xs font-display font-bold text-brand-red group-hover:gap-1.5 transition-all">
                       Inquire Product <ArrowRight className="w-3.5 h-3.5" />
