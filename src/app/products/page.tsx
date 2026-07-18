@@ -4,34 +4,59 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Search, SlidersHorizontal, ArrowRight } from 'lucide-react';
+import { Search, SlidersHorizontal, ArrowRight, X } from 'lucide-react';
 import { PRODUCTS } from '@/lib/data';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+import { motion, AnimatePresence } from 'framer-motion';
+
+import { POWER_PRODUCTS } from '@/lib/powerData';
+
+
+// Combine regular PRODUCTS with Power Products
+const allCatalogProducts = [
+  ...PRODUCTS.map(p => ({ ...p, parentCategory: 'Lighting' })),
+  ...POWER_PRODUCTS
+];
 
 function ProductsCatalogContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [selectedProductForSpecs, setSelectedProductForSpecs] = useState<any | null>(null);
 
   // Get active query states
-  const categoryParam = searchParams.get('category') || 'All';
+  const categoryParam = searchParams.get('category') || 'Lighting';
+  const subCategoryParam = searchParams.get('subcategory') || 'All';
   const queryParam = searchParams.get('q') || '';
-  const [activeCategory, setActiveCategory] = useState(categoryParam);
+
+  const [activeParentCategory, setActiveParentCategory] = useState(categoryParam);
+  const [activeSubCategory, setActiveSubCategory] = useState(subCategoryParam);
   const [searchQuery, setSearchQuery] = useState(queryParam);
 
-  const categories = ['All', ...Array.from(new Set(PRODUCTS.map((prod) => prod.category))).filter(Boolean)];
-
   useEffect(() => {
-    setActiveCategory(categoryParam);
+    setActiveParentCategory(categoryParam);
+    setActiveSubCategory(subCategoryParam);
     setSearchQuery(queryParam);
-  }, [categoryParam, queryParam]);
+  }, [categoryParam, subCategoryParam, queryParam]);
 
-  // Handle category toggle
-  const handleCategorySelect = (category: string) => {
+  // Dynamically compute the sub-categories list based on current parent category
+  const subCategories = [
+    'All',
+    ...Array.from(
+      new Set(
+        allCatalogProducts
+          .filter(prod => prod.parentCategory.toLowerCase() === activeParentCategory.toLowerCase())
+          .map(prod => prod.category)
+      )
+    ).filter(Boolean)
+  ];
+
+  // Handle specific subcategory selection
+  const handleSubCategorySelect = (subCat: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (category === 'All') {
-      params.delete('category');
+    if (subCat === 'All') {
+      params.delete('subcategory');
     } else {
-      params.set('category', category);
+      params.set('subcategory', subCat);
     }
     router.push(`/products?${params.toString()}`, { scroll: false });
   };
@@ -49,15 +74,18 @@ function ProductsCatalogContent() {
     router.push(`/products?${params.toString()}`, { scroll: false });
   };
 
-  // Filter products
-  const filteredProducts = PRODUCTS.filter((prod) => {
-    const matchesCategory =
-      activeCategory === 'All' || prod.category === activeCategory;
+  // Filter products based on parentCategory, subCategory and search query
+  const filteredProducts = allCatalogProducts.filter((prod) => {
+    const matchesParent =
+      prod.parentCategory.toLowerCase() === activeParentCategory.toLowerCase();
+    const matchesSub =
+      activeSubCategory === 'All' || prod.category === activeSubCategory;
     const matchesSearch =
       prod.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       prod.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       prod.category.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+
+    return matchesParent && matchesSub && matchesSearch;
   });
 
   return (
@@ -75,18 +103,13 @@ function ProductsCatalogContent() {
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 space-y-4 pt-10">
           <ScrollReveal variant="text-mask-left">
             <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
-              Engineered Lighting
+              {activeParentCategory} Catalog
             </h4>
           </ScrollReveal>
           <ScrollReveal variant="text-mask-left" delay={0.1}>
             <h1 className="font-serif font-black text-4xl md:text-6xl text-white">
-              Product Catalog
+              {activeParentCategory}
             </h1>
-          </ScrollReveal>
-          <ScrollReveal variant="slide-right" delay={0.2}>
-            <p className="text-base text-white/70 max-w-xl font-sans leading-relaxed">
-              Discover our comprehensive range of high-efficiency LED luminaires built with custom isolated drivers for extreme environments.
-            </p>
           </ScrollReveal>
         </div>
       </section>
@@ -107,10 +130,10 @@ function ProductsCatalogContent() {
                 <span className="font-display font-bold text-sm text-brand-dark flex items-center gap-2">
                   <SlidersHorizontal className="w-4.5 h-4.5 text-brand-red" /> Filter Controls
                 </span>
-                {(activeCategory !== 'All' || searchQuery) && (
+                {(activeSubCategory !== 'All' || searchQuery) && (
                   <button
                     onClick={() => {
-                      router.push('/products');
+                      router.push(`/products?category=${activeParentCategory}`);
                     }}
                     className="text-xs font-display font-bold text-brand-red hover:underline cursor-pointer"
                   >
@@ -141,16 +164,17 @@ function ProductsCatalogContent() {
                 <label className="text-xs font-display font-bold text-brand-dark uppercase tracking-wider block mb-1">
                   Category Filter
                 </label>
-                <div className="flex flex-wrap lg:flex-col gap-2">
-                  {categories.map((cat) => (
+                <div className="flex flex-wrap lg:flex-col gap-2 max-h-[350px] overflow-y-auto pr-1 scrollbar-thin">
+                  {subCategories.map((cat) => (
                     <button
                       key={cat}
-                      onClick={() => handleCategorySelect(cat)}
-                      className={`px-4 py-2 text-left text-xs font-display font-bold rounded-lg transition-all cursor-pointer w-auto lg:w-full ${
-                        activeCategory === cat
+                      onClick={() => handleSubCategorySelect(cat)}
+                      className={`px-4 py-2 text-left text-xs font-display font-bold rounded-lg transition-all cursor-pointer w-auto lg:w-full truncate ${
+                        activeSubCategory === cat
                           ? 'bg-brand-red text-white shadow-sm'
                           : 'bg-white border border-brand-border text-brand-dark hover:bg-brand-light-gray'
                       }`}
+                      title={cat}
                     >
                       {cat}
                     </button>
@@ -170,7 +194,7 @@ function ProductsCatalogContent() {
                 className="flex"
               >
                 <div
-                  className="bg-white rounded-2xl overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-between group hover:border-brand-red/35 transition-colors duration-300 w-full"
+                  className="bg-white rounded-tr-[32px] rounded-bl-[32px] rounded-tl-md rounded-br-md overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-between group hover:border-brand-red/35 transition-colors duration-300 w-full"
                 >
                   <div>
                     <div className="relative h-[250px] w-full overflow-hidden bg-brand-light-gray">
@@ -196,26 +220,38 @@ function ProductsCatalogContent() {
                       {/* Quick Specs Grid */}
                       <div className="grid grid-cols-2 gap-3 pt-3 border-t border-brand-border/40 text-xs font-sans text-brand-gray">
                         <div>
-                          <span className="block font-semibold text-brand-dark">Wattage:</span>
-                          {prod.specifications['Wattage Range'] || 'N/A'}
+                          <span className="block font-semibold text-brand-dark">
+                            {prod.parentCategory === 'Power Products' ? 'Capacity:' : 'Wattage:'}
+                          </span>
+                          {(prod.specifications as any)['Capacity Range'] || (prod.specifications as any)['Wattage Range'] || 'N/A'}
                         </div>
                         <div>
-                          <span className="block font-semibold text-brand-dark">IP Protection:</span>
-                          {prod.specifications['IP Rating'] || 'IP65'}
+                          <span className="block font-semibold text-brand-dark">
+                            {prod.parentCategory === 'Power Products' ? 'Protection:' : 'IP Protection:'}
+                          </span>
+                          {(prod.specifications as any)['IP Rating'] || (prod.specifications as any)['Environment'] || (prod.parentCategory === 'Power Products' ? 'N/A' : 'IP65')}
                         </div>
                       </div>
+
+                      {/* Technical Specs Trigger */}
+                      <button
+                        onClick={() => setSelectedProductForSpecs(prod)}
+                        className="w-full mt-4 py-2 border border-brand-border hover:border-brand-red text-brand-dark hover:text-brand-red rounded-lg text-xs font-display font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 bg-brand-light-gray/50 hover:bg-brand-light-gray"
+                      >
+                        Technical Specs
+                      </button>
                     </div>
                   </div>
                   
                   <div className="px-6 pb-6 pt-4 border-t border-brand-border/40 flex items-center justify-between">
                     <span className="text-[11px] font-display font-bold text-brand-gray">
-                      Efficacy: {prod.specifications['Luminous Efficacy'] || 'High Efficacy'}
+                      {prod.parentCategory === 'Power Products' ? 'Efficiency:' : 'Efficacy:'} {(prod.specifications as any)['Efficiency'] || (prod.specifications as any)['Luminous Efficacy'] || 'High Efficacy'}
                     </span>
                     <Link
-                      href={`/products/${prod.slug}`}
+                      href={`/contact?product=${encodeURIComponent(prod.name)}`}
                       className="inline-flex items-center gap-1 text-xs font-display font-bold text-brand-red group-hover:gap-1.5 transition-all"
                     >
-                      View Spec Sheet <ArrowRight className="w-3.5 h-3.5" />
+                      Inquire Product <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
                 </div>
@@ -225,7 +261,7 @@ function ProductsCatalogContent() {
             <div className="bg-brand-light-gray border border-brand-border rounded-2xl p-12 text-center text-brand-gray md:col-span-1 lg:col-span-2">
               <p className="text-base font-sans">No products found matching your active filter criteria.</p>
               <button
-                onClick={() => router.push('/products')}
+                onClick={() => router.push(`/products?category=${activeParentCategory}`)}
                 className="text-xs font-display font-bold text-brand-red mt-4 hover:underline cursor-pointer"
               >
                 Reset All Filters
@@ -234,6 +270,79 @@ function ProductsCatalogContent() {
           )}
         </div>
       </section>
+
+      {/* Specifications Modal */}
+      <AnimatePresence>
+        {selectedProductForSpecs && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in"
+            onClick={() => setSelectedProductForSpecs(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              className="bg-white rounded-2xl w-full max-w-lg max-h-[85vh] overflow-hidden flex flex-col border border-brand-border shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between border-b border-brand-border p-6 bg-brand-light-gray">
+                <div>
+                  <span className="text-[10px] uppercase tracking-widest font-display font-bold text-brand-red">
+                    {selectedProductForSpecs.category}
+                  </span>
+                  <h3 className="font-display font-bold text-lg text-brand-dark">
+                    {selectedProductForSpecs.name}
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setSelectedProductForSpecs(null)}
+                  className="text-brand-gray hover:text-brand-dark transition-colors cursor-pointer p-1.5 rounded-full hover:bg-brand-border/60"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Modal Body / Table */}
+              <div className="p-6 overflow-y-auto space-y-4 flex-1 scrollbar-thin">
+                <table className="w-full text-left border-collapse text-xs font-sans text-brand-gray">
+                  <tbody>
+                    {Object.entries(selectedProductForSpecs.specifications).map(([key, value]) => {
+                      if (!value) return null;
+                      return (
+                        <tr key={key} className="border-b border-brand-border/50 hover:bg-brand-light-gray/50">
+                          <td className="py-2.5 pr-4 font-bold text-brand-dark align-top w-2/5">
+                            {key}
+                          </td>
+                          <td className="py-2.5 text-brand-gray whitespace-pre-line align-top font-medium">
+                            {String(value)}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-6 border-t border-brand-border flex items-center justify-between bg-brand-light-gray/50">
+                <span className="text-[11px] font-display font-bold text-brand-gray">
+                  Need custom configurations?
+                </span>
+                <Link
+                  href={`/contact?product=${encodeURIComponent(selectedProductForSpecs.name)}`}
+                  className="px-4 py-2 bg-brand-red text-white text-xs font-display font-bold rounded-full hover:bg-brand-red-hover transition-colors"
+                >
+                  Inquire Now
+                </Link>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

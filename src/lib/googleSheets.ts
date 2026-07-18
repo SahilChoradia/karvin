@@ -1,17 +1,17 @@
 export interface LeadData {
   name: string;
-  companyName: string;
+  companyName?: string;
   phone: string;
-  email: string;
-  city: string;
-  state: string;
-  businessType: string;
-  requirement: string;
-  productInterested: string;
+  email?: string;
+  city?: string;
+  state?: string;
+  businessType?: string;
+  requirement?: string;
+  productInterested?: string;
   message: string;
-  budget: string;
-  timeline: string;
-  source: string;
+  budget?: string;
+  timeline?: string;
+  source?: string;
   ip?: string;
   userAgent?: string;
 }
@@ -29,22 +29,23 @@ export async function submitLeadToGoogleSheets(data: LeadData) {
     const payload = {
       timestamp: new Date().toISOString(),
       name: data.name,
-      company: data.companyName,
+      company: data.companyName || '',
       phone: data.phone,
-      email: data.email,
-      city: data.city,
-      state: data.state,
-      businessType: data.businessType,
-      requirement: data.requirement,
-      product: data.productInterested,
-      budget: data.budget,
-      timeline: data.timeline,
+      email: data.email || '',
+      city: data.city || '',
+      state: data.state || '',
+      businessType: data.businessType || '',
+      requirement: data.requirement || '',
+      product: data.productInterested || '',
+      budget: data.budget || '',
+      timeline: data.timeline || '',
       message: data.message,
-      source: data.source,
+      source: data.source || '',
       ip: data.ip || 'N/A',
       userAgent: data.userAgent || 'N/A',
       status: 'New Lead',
     };
+
 
     // Apps Script requires redirect follows
     const response = await fetch(url, {

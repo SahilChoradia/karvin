@@ -37,11 +37,7 @@ export default function About() {
               Engineering Trust & Reliability.
             </h1>
           </ScrollReveal>
-          <ScrollReveal variant="slide-right" delay={0.2}>
-            <p className="text-base md:text-lg text-white/70 max-w-2xl font-sans leading-relaxed">
-              KARVIN Power Systems Pvt. Ltd. represents decades of leadership in developing high-end electrical and lighting systems designed to survive harsh power grids.
-            </p>
-          </ScrollReveal>
+
         </div>
       </section>
 
@@ -55,12 +51,7 @@ export default function About() {
           </ScrollReveal>
           <ScrollReveal variant="slide-right" delay={0.15}>
             <p className="text-sm md:text-base text-brand-gray leading-relaxed font-sans">
-              Our company story began with a simple principle: <strong>under-engineered lighting represents a safety hazard and a financial drain.</strong> Since our inception, we have refused to distribute standard imported models. Instead, we chose to design and assemble the internal electronic drivers in-house in Mumbai.
-            </p>
-          </ScrollReveal>
-          <ScrollReveal variant="slide-right" delay={0.25}>
-            <p className="text-sm md:text-base text-brand-gray leading-relaxed font-sans">
-              We operate on a participative business model. Our best projects are built when we co-engineer alongside corporate safety teams, architects, and facility managers to match the output lighting grid to the specific heat and voltage constraints of their sites.
+              <strong>under-engineered lighting represents a safety hazard and a financial drain.</strong>
             </p>
           </ScrollReveal>
 
@@ -152,11 +143,7 @@ export default function About() {
               State of the Art Facilities & Testing Chambers.
             </h2>
           </ScrollReveal>
-          <ScrollReveal variant="slide-left" delay={0.2}>
-            <p className="text-sm md:text-base text-brand-gray leading-relaxed font-sans">
-              Our assembly unit in Mumbai features automated testing benches, high-precision soldering setups, and dedicated quality assurance lines. Every batch of LED drivers is subjected to continuous load testing and high ambient thermal stress runs before final casing assembly.
-            </p>
-          </ScrollReveal>
+
 
           <ScrollReveal variant="slide-left" delay={0.3}>
             <ul className="space-y-3 font-sans">
@@ -213,7 +200,6 @@ export default function About() {
                 <div className="space-y-2">
                   <span className="font-display font-black text-lg text-brand-red">{m.year}</span>
                   <h4 className="font-display font-bold text-base text-brand-dark">{m.title}</h4>
-                  <p className="text-sm text-brand-gray leading-relaxed font-sans">{m.desc}</p>
                 </div>
               </ScrollReveal>
             ))}

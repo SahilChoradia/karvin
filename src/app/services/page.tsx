@@ -39,11 +39,7 @@ export default function ServicesPage() {
               Engineering Services
             </h1>
           </ScrollReveal>
-          <ScrollReveal variant="slide-right" delay={0.2}>
-            <p className="text-base text-white/70 max-w-2xl font-sans leading-relaxed">
-              From Initial daylight calculations and simulation reports to custom PCB designing, manufacturing, and maintenance contracts.
-            </p>
-          </ScrollReveal>
+
         </div>
       </section>
 
@@ -55,11 +51,7 @@ export default function ServicesPage() {
               Complete Lighting Engineering End-to-End.
             </h2>
           </ScrollReveal>
-          <ScrollReveal variant="fade-up" delay={0.15}>
-            <p className="text-base text-brand-gray font-sans leading-relaxed">
-              We do not just ship boxes. Our team delivers standard-compliant site layouts, ROI audits, and custom maintenance contracts to protect your facility from operations interruptions.
-            </p>
-          </ScrollReveal>
+
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -74,7 +66,8 @@ export default function ServicesPage() {
                 className="flex"
               >
                 <div
-                  className="bg-white p-8 rounded-2xl border border-brand-border luxury-shadow flex flex-col justify-between hover:border-brand-red/35 transition-colors duration-300 w-full"
+                  id={srv.id}
+                  className="bg-white p-8 rounded-2xl border border-brand-border luxury-shadow flex flex-col justify-between hover:border-brand-red/35 transition-colors duration-300 w-full scroll-mt-24"
                 >
                   <div className="space-y-6">
                     <div className="flex items-center gap-4">
@@ -86,9 +79,7 @@ export default function ServicesPage() {
                       </h3>
                     </div>
 
-                    <p className="text-sm text-brand-gray leading-relaxed font-sans">
-                      {srv.description}
-                    </p>
+
 
                     <ul className="space-y-3 pt-2">
                       {srv.details.map((detail, index) => (

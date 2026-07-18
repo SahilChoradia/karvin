@@ -82,11 +82,7 @@ export default function Footer() {
                 Engineering Services
               </Link>
             </li>
-            <li>
-              <Link href="/projects" className="text-white/60 hover:text-brand-red text-sm font-medium transition-colors block">
-                Featured Projects
-              </Link>
-            </li>
+
             <li>
               <Link href="/careers" className="text-white/60 hover:text-brand-red text-sm font-medium transition-colors block">
                 Careers & Culture

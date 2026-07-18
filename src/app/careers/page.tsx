@@ -114,11 +114,7 @@ export default function CareersPage() {
               Careers at KARVIN
             </h1>
           </ScrollReveal>
-          <ScrollReveal variant="slide-right" delay={0.2}>
-            <p className="text-base text-white/70 max-w-2xl font-sans leading-relaxed">
-              Co-engineer the future of energy. Explore open opportunities inside our hardware design, project estimation, and deployment teams.
-            </p>
-          </ScrollReveal>
+
         </div>
       </section>
 
@@ -131,11 +127,7 @@ export default function CareersPage() {
                 A Culture Centered Around Engineering Integrity.
               </h2>
             </ScrollReveal>
-            <ScrollReveal variant="slide-right" delay={0.1}>
-              <p className="text-sm md:text-base text-brand-gray leading-relaxed font-sans">
-                At KARVIN, we believe that high-quality products are built by empowered minds. We foster an environment of continuous learning, rigorous testing, and structural transparency. You will work alongside electrical pioneers to deliver critical safety products.
-              </p>
-            </ScrollReveal>
+
             <ScrollReveal variant="slide-right" delay={0.2}>
               <div className="flex items-center gap-2.5 text-xs text-brand-gray font-sans font-semibold uppercase tracking-wider">
                 <ShieldCheck className="w-5 h-5 text-brand-red" /> An equal opportunity employer
@@ -150,7 +142,7 @@ export default function CareersPage() {
                   <h4 className="font-display font-bold text-sm text-brand-dark flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-brand-red" /> {b.title}
                   </h4>
-                  <p className="text-xs text-brand-gray leading-relaxed font-sans">{b.desc}</p>
+
                 </div>
               </ScrollReveal>
             ))}

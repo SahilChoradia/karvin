@@ -39,11 +39,7 @@ export default function IndustriesPage() {
               Industry Solutions
             </h1>
           </ScrollReveal>
-          <ScrollReveal variant="slide-right" delay={0.2}>
-            <p className="text-base text-white/70 max-w-2xl font-sans leading-relaxed">
-              We solve typical industrial constraints. Explore challenges, custom-engineered solutions, and recommended fixtures for each domain.
-            </p>
-          </ScrollReveal>
+
         </div>
       </section>
 
@@ -87,11 +83,7 @@ export default function IndustriesPage() {
                       {ind.name} Lighting
                     </h2>
                   </ScrollReveal>
-                  <ScrollReveal variant={isEven ? "slide-left" : "slide-right"} delay={0.15}>
-                    <p className="text-base text-brand-gray font-sans leading-relaxed">
-                      {ind.description}
-                    </p>
-                  </ScrollReveal>
+
                 </div>
 
                 {/* Challenges and Solutions Columns */}
@@ -164,11 +156,7 @@ export default function IndustriesPage() {
               Require a Custom Engineering Audit?
             </h2>
           </ScrollReveal>
-          <ScrollReveal variant="fade-up" delay={0.15}>
-            <p className="text-sm md:text-base text-brand-gray max-w-xl mx-auto font-sans leading-relaxed">
-              Our Dialux simulation specialists can map your layout and recommend exact driver configurations based on your ambient temperature and voltage spike records.
-            </p>
-          </ScrollReveal>
+
           <ScrollReveal variant="fade-up" delay={0.3} className="pt-4">
             <Link href="/contact">
               <Button size="lg">Consult Our Technical Team</Button>

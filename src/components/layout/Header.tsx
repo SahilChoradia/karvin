@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Search, ChevronDown, Phone, Mail, ArrowRight } from 'lucide-react';
+import { Menu, X, Search, ChevronDown, Phone, Mail, ArrowRight, FileText, Settings, Building, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '@/components/ui/Button';
-import { PRODUCTS, INDUSTRIES } from '@/lib/data';
+import { PRODUCTS, INDUSTRIES, SERVICES, BLOG_POSTS } from '@/lib/data';
+import { POWER_PRODUCTS } from '@/lib/powerData';
 import { cn } from '@/lib/utils';
 
 export default function Header() {
@@ -17,6 +18,8 @@ export default function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeMegaMenu, setActiveMegaMenu] = useState<'products' | 'industries' | null>(null);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [mobileIndustriesOpen, setMobileIndustriesOpen] = useState(false);
 
   // Monitor scroll
   useEffect(() => {
@@ -46,16 +49,57 @@ export default function Header() {
     setSearchOpen(false);
     setActiveMegaMenu(null);
     setSearchQuery('');
+    setMobileProductsOpen(false);
+    setMobileIndustriesOpen(false);
   }, [pathname]);
 
-  const searchResults = searchQuery
-    ? PRODUCTS.filter(
-        (p) =>
-          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (p.subCategory && p.subCategory.toLowerCase().includes(searchQuery.toLowerCase()))
-      ).slice(0, 5)
-    : [];
+  // Reset dropdowns when mobile menu closes
+  useEffect(() => {
+    if (!mobileMenuOpen) {
+      setMobileProductsOpen(false);
+      setMobileIndustriesOpen(false);
+    }
+  }, [mobileMenuOpen]);
+
+  // Search state & filter logic for the entire website
+  const getSearchResults = () => {
+    if (!searchQuery) return { products: [], services: [], industries: [], blogs: [] };
+    const query = searchQuery.toLowerCase();
+
+    const matchedProducts = [
+      ...PRODUCTS.map(p => ({ ...p, parentCategory: 'Lighting' })),
+      ...POWER_PRODUCTS
+    ].filter(p => 
+      p.name.toLowerCase().includes(query) ||
+      p.category.toLowerCase().includes(query) ||
+      (p.description && p.description.toLowerCase().includes(query))
+    ).slice(0, 4);
+
+    const matchedServices = SERVICES.filter(s =>
+      s.title.toLowerCase().includes(query) ||
+      s.description.toLowerCase().includes(query)
+    ).slice(0, 3);
+
+    const matchedIndustries = INDUSTRIES.filter(i =>
+      i.name.toLowerCase().includes(query) ||
+      i.description.toLowerCase().includes(query)
+    ).slice(0, 3);
+
+    const matchedBlogs = BLOG_POSTS.filter(b =>
+      b.title.toLowerCase().includes(query) ||
+      b.excerpt.toLowerCase().includes(query)
+    ).slice(0, 3);
+
+    return {
+      products: matchedProducts,
+      services: matchedServices,
+      industries: matchedIndustries,
+      blogs: matchedBlogs
+    };
+  };
+
+  const results = getSearchResults();
+  const hasResults = results.products.length > 0 || results.services.length > 0 || results.industries.length > 0 || results.blogs.length > 0;
 
   return (
     <>
@@ -167,19 +211,7 @@ export default function Header() {
               Services
             </Link>
 
-            <Link
-              href="/projects"
-              className={cn(
-                'font-sans font-semibold text-sm transition-colors hover:text-brand-red py-2',
-                pathname === '/projects'
-                  ? 'text-brand-red'
-                  : isScrolled || activeMegaMenu || pathname !== '/'
-                  ? 'text-brand-dark'
-                  : 'text-white'
-              )}
-            >
-              Projects
-            </Link>
+
 
             <Link
               href="/blog"
@@ -261,29 +293,26 @@ export default function Header() {
               onMouseEnter={() => setActiveMegaMenu(activeMegaMenu)}
               onMouseLeave={() => setActiveMegaMenu(null)}
             >
-              <div className="max-w-7xl mx-auto px-8 py-10 grid grid-cols-4 gap-8">
+              <div className="max-w-7xl mx-auto px-8 py-10">
                 {activeMegaMenu === 'products' ? (
-                  <>
-                    <div className="col-span-3 grid grid-cols-3 gap-x-8 gap-y-3 py-2">
-                      {Array.from(new Set(PRODUCTS.map((p) => p.category)))
-                        .filter(Boolean)
-                        .map((cat) => {
-                          const count = PRODUCTS.filter((p) => p.category === cat).length;
-                          return (
-                            <Link
-                              key={cat}
-                              href={`/products?category=${encodeURIComponent(cat)}`}
-                              className="group flex items-center justify-between text-brand-dark hover:text-brand-red text-sm font-medium transition-colors py-1"
-                            >
-                              <span>{cat}</span>
-                              <span className="text-[10px] bg-brand-light-gray text-brand-gray px-2 py-0.5 rounded-full group-hover:bg-brand-red-light group-hover:text-brand-red transition-colors font-normal font-sans ml-2">
-                                {count}
-                              </span>
-                            </Link>
-                          );
-                        })}
+                  <div className="max-w-2xl mx-auto grid grid-cols-2 gap-12">
+                    <div className="flex flex-col gap-4 py-2 justify-center">
+                      <Link
+                        href="/products?category=Power+Products"
+                        className="group flex items-center justify-between text-brand-dark hover:text-brand-red text-sm font-bold transition-colors py-1 border-b border-brand-border/40 pb-2"
+                      >
+                        <span>Power Products</span>
+                        <ArrowRight className="w-4 h-4 text-brand-gray group-hover:text-brand-red group-hover:translate-x-1 transition-all" />
+                      </Link>
+                      <Link
+                        href="/products?category=Lighting"
+                        className="group flex items-center justify-between text-brand-dark hover:text-brand-red text-sm font-bold transition-colors py-1 border-b border-brand-border/40 pb-2"
+                      >
+                        <span>Lighting</span>
+                        <ArrowRight className="w-4 h-4 text-brand-gray group-hover:text-brand-red group-hover:translate-x-1 transition-all" />
+                      </Link>
                     </div>
-                    <div className="bg-brand-light-gray p-6 rounded-xl flex flex-col justify-between">
+                    <div className="bg-brand-light-gray p-6 rounded-xl flex flex-col justify-between border border-brand-border/40 luxury-shadow">
                       <div>
                         <h4 className="font-display font-bold text-base text-brand-dark mb-2">
                           Engineering Excellence
@@ -296,9 +325,9 @@ export default function Header() {
                         Consult Our Engineers <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
-                  </>
+                  </div>
                 ) : (
-                  <>
+                  <div className="grid grid-cols-4 gap-8">
                     <div className="col-span-3 grid grid-cols-2 gap-6">
                       {INDUSTRIES.map((ind) => (
                         <Link
@@ -325,7 +354,7 @@ export default function Header() {
                         </p>
                       </div>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             </motion.div>
@@ -354,7 +383,7 @@ export default function Header() {
                 <Search className="w-5 h-5 text-brand-gray" />
                 <input
                   type="text"
-                  placeholder="Search products by name, type, or category..."
+                  placeholder="Search products, industries, services, blogs..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full text-brand-dark font-sans text-lg focus:outline-none placeholder:text-gray-400"
@@ -369,38 +398,123 @@ export default function Header() {
               </div>
 
               {searchQuery && (
-                <div className="p-4 max-h-[350px] overflow-y-auto">
-                  {searchResults.length > 0 ? (
-                    <div className="space-y-2">
-                      <p className="text-xs font-sans font-bold uppercase tracking-wider text-brand-gray mb-2">
-                        Product Matches ({searchResults.length})
-                      </p>
-                      {searchResults.map((prod) => (
-                        <Link
-                          key={prod.id}
-                          href={`/products/${prod.slug}`}
-                          className="flex items-center gap-4 p-2 hover:bg-brand-light-gray rounded-lg transition-colors group"
-                        >
-                          <img
-                            src={prod.image}
-                            alt={prod.name}
-                            className="w-12 h-12 object-cover rounded-lg bg-gray-100"
-                          />
-                          <div className="flex-1">
-                            <h5 className="font-sans font-semibold text-sm text-brand-dark group-hover:text-brand-red transition-colors">
-                              {prod.name}
-                            </h5>
-                            <p className="text-xs text-brand-gray">
-                              {prod.category} {prod.subCategory ? `• ${prod.subCategory}` : ''}
-                            </p>
+                <div className="p-6 max-h-[500px] overflow-y-auto space-y-6">
+                  {hasResults ? (
+                    <>
+                      {/* Products Section */}
+                      {results.products.length > 0 && (
+                        <div className="space-y-2">
+                          <h6 className="text-xs font-sans font-bold uppercase tracking-wider text-brand-red flex items-center gap-1.5 pb-1.5 border-b border-brand-border/40">
+                            <ShoppingBag className="w-3.5 h-3.5" /> Products ({results.products.length})
+                          </h6>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            {results.products.map((prod) => (
+                              <Link
+                                key={prod.id}
+                                href={`/products?category=${encodeURIComponent(prod.parentCategory)}&q=${encodeURIComponent(prod.name)}`}
+                                className="flex items-center gap-3 p-2 hover:bg-brand-light-gray rounded-lg transition-colors group"
+                                onClick={() => setSearchOpen(false)}
+                              >
+                                <img
+                                  src={prod.image}
+                                  alt={prod.name}
+                                  className="w-10 h-10 object-cover rounded-md bg-gray-100"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <h5 className="font-sans font-semibold text-sm text-brand-dark group-hover:text-brand-red transition-colors truncate">
+                                    {prod.name}
+                                  </h5>
+                                  <p className="text-[10px] text-brand-gray truncate">
+                                    {prod.parentCategory} • {prod.category}
+                                  </p>
+                                </div>
+                              </Link>
+                            ))}
                           </div>
-                          <ArrowRight className="w-4 h-4 text-brand-gray opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </Link>
-                      ))}
-                    </div>
+                        </div>
+                      )}
+
+                      {/* Industries Section */}
+                      {results.industries.length > 0 && (
+                        <div className="space-y-2">
+                          <h6 className="text-xs font-sans font-bold uppercase tracking-wider text-brand-red flex items-center gap-1.5 pb-1.5 border-b border-brand-border/40">
+                            <Building className="w-3.5 h-3.5" /> Industries ({results.industries.length})
+                          </h6>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            {results.industries.map((ind) => (
+                              <Link
+                                key={ind.id}
+                                href={`/industries#${ind.slug}`}
+                                className="flex flex-col p-2.5 hover:bg-brand-light-gray rounded-lg transition-colors group"
+                                onClick={() => setSearchOpen(false)}
+                              >
+                                <h5 className="font-sans font-semibold text-sm text-brand-dark group-hover:text-brand-red transition-colors">
+                                  {ind.name}
+                                </h5>
+                                <p className="text-[11px] text-brand-gray line-clamp-1">
+                                  {ind.description}
+                                </p>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Services Section */}
+                      {results.services.length > 0 && (
+                        <div className="space-y-2">
+                          <h6 className="text-xs font-sans font-bold uppercase tracking-wider text-brand-red flex items-center gap-1.5 pb-1.5 border-b border-brand-border/40">
+                            <Settings className="w-3.5 h-3.5" /> Services ({results.services.length})
+                          </h6>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            {results.services.map((srv) => (
+                              <Link
+                                key={srv.id}
+                                href={`/services#${srv.id}`}
+                                className="flex flex-col p-2.5 hover:bg-brand-light-gray rounded-lg transition-colors group"
+                                onClick={() => setSearchOpen(false)}
+                              >
+                                <h5 className="font-sans font-semibold text-sm text-brand-dark group-hover:text-brand-red transition-colors">
+                                  {srv.title}
+                                </h5>
+                                <p className="text-[11px] text-brand-gray line-clamp-1">
+                                  {srv.description}
+                                </p>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Blog Posts Section */}
+                      {results.blogs.length > 0 && (
+                        <div className="space-y-2">
+                          <h6 className="text-xs font-sans font-bold uppercase tracking-wider text-brand-red flex items-center gap-1.5 pb-1.5 border-b border-brand-border/40">
+                            <FileText className="w-3.5 h-3.5" /> Knowledge Hub ({results.blogs.length})
+                          </h6>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            {results.blogs.map((post) => (
+                              <Link
+                                key={post.id}
+                                href={`/blog/${post.slug}`}
+                                className="flex flex-col p-2.5 hover:bg-brand-light-gray rounded-lg transition-colors group"
+                                onClick={() => setSearchOpen(false)}
+                              >
+                                <h5 className="font-sans font-semibold text-sm text-brand-dark group-hover:text-brand-red transition-colors line-clamp-1">
+                                  {post.title}
+                                </h5>
+                                <p className="text-[11px] text-brand-gray line-clamp-1">
+                                  {post.excerpt}
+                                </p>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
                   ) : (
-                    <p className="text-sm text-brand-gray py-6 text-center">
-                      No products found matching &quot;{searchQuery}&quot;
+                    <p className="text-sm text-brand-gray py-8 text-center">
+                      No results found matching &quot;{searchQuery}&quot; across the website
                     </p>
                   )}
                 </div>
@@ -454,18 +568,76 @@ export default function Header() {
                   <Link href="/about" className="font-sans font-semibold text-lg text-brand-dark hover:text-brand-red border-b border-brand-border/40 py-2">
                     About Us
                   </Link>
-                  <Link href="/products" className="font-sans font-semibold text-lg text-brand-dark hover:text-brand-red border-b border-brand-border/40 py-2">
-                    All Products
-                  </Link>
-                  <Link href="/industries" className="font-sans font-semibold text-lg text-brand-dark hover:text-brand-red border-b border-brand-border/40 py-2">
-                    Industries Served
-                  </Link>
+                  {/* Products Dropdown */}
+                  <div>
+                    <button
+                      onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
+                      className="w-full flex items-center justify-between font-sans font-semibold text-lg text-brand-dark hover:text-brand-red border-b border-brand-border/40 py-2 text-left focus:outline-none"
+                    >
+                      <span>Products</span>
+                      <ChevronDown className={cn("w-5 h-5 transition-transform duration-200 text-brand-gray", mobileProductsOpen && "rotate-180 text-brand-red")} />
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {mobileProductsOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden pl-4 flex flex-col gap-2 pt-2 pb-1 border-l-2 border-brand-red/20 ml-1 mt-1"
+                        >
+                          <Link href="/products" className="font-sans font-medium text-base text-brand-gray hover:text-brand-red py-1.5 transition-colors">
+                            All Products
+                          </Link>
+                          <Link href="/products?category=Power+Products" className="font-sans font-medium text-base text-brand-gray hover:text-brand-red py-1.5 transition-colors">
+                            Power Products
+                          </Link>
+                          <Link href="/products?category=Lighting" className="font-sans font-medium text-base text-brand-gray hover:text-brand-red py-1.5 transition-colors">
+                            Lighting
+                          </Link>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Industries Dropdown */}
+                  <div>
+                    <button
+                      onClick={() => setMobileIndustriesOpen(!mobileIndustriesOpen)}
+                      className="w-full flex items-center justify-between font-sans font-semibold text-lg text-brand-dark hover:text-brand-red border-b border-brand-border/40 py-2 text-left focus:outline-none"
+                    >
+                      <span>Industries</span>
+                      <ChevronDown className={cn("w-5 h-5 transition-transform duration-200 text-brand-gray", mobileIndustriesOpen && "rotate-180 text-brand-red")} />
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {mobileIndustriesOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden pl-4 flex flex-col gap-2 pt-2 pb-1 border-l-2 border-brand-red/20 ml-1 mt-1"
+                        >
+                          <Link href="/industries" className="font-sans font-medium text-base text-brand-gray hover:text-brand-red py-1.5 transition-colors">
+                            All Industries
+                          </Link>
+                          {INDUSTRIES.map((ind) => (
+                            <Link
+                              key={ind.id}
+                              href={`/industries#${ind.slug}`}
+                              className="font-sans font-medium text-base text-brand-gray hover:text-brand-red py-1.5 transition-colors"
+                            >
+                              {ind.name}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                   <Link href="/services" className="font-sans font-semibold text-lg text-brand-dark hover:text-brand-red border-b border-brand-border/40 py-2">
                     Services
                   </Link>
-                  <Link href="/projects" className="font-sans font-semibold text-lg text-brand-dark hover:text-brand-red border-b border-brand-border/40 py-2">
-                    Projects Portfolio
-                  </Link>
+
                   <Link href="/blog" className="font-sans font-semibold text-lg text-brand-dark hover:text-brand-red border-b border-brand-border/40 py-2">
                     Knowledge Hub
                   </Link>

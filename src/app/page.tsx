@@ -12,7 +12,8 @@ import {
 import Button from '@/components/ui/Button';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
 import ScrollReveal from '@/components/ui/ScrollReveal';
-import { PRODUCTS, PROJECTS, INDUSTRIES } from '@/lib/data';
+import { PRODUCTS, INDUSTRIES } from '@/lib/data';
+import { POWER_PRODUCTS } from '@/lib/powerData';
 
 // Industries served data mapper
 const industryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -31,6 +32,7 @@ export default function Home() {
   ];
 
   const [heroImageIdx, setHeroImageIdx] = useState(0);
+  const [randomPowerProducts, setRandomPowerProducts] = useState<any[]>([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -38,6 +40,17 @@ export default function Home() {
     }, 7000); // 7 seconds per slide
     return () => clearInterval(timer);
   }, [heroImages.length]);
+
+  useEffect(() => {
+    // Pick 3 random power products on mount
+    const shuffled = [...POWER_PRODUCTS].sort(() => 0.5 - Math.random());
+    setRandomPowerProducts(shuffled.slice(0, 3));
+  }, []);
+
+  const displayedProducts = [
+    ...PRODUCTS.slice(0, 6),
+    ...randomPowerProducts
+  ];
 
   // Why Choose Karvin Details
   const pillars = [
@@ -85,7 +98,7 @@ export default function Home() {
               key={heroImageIdx}
               initial={{ opacity: 0, scale: 1 }}
               animate={{ 
-                opacity: 0.45, 
+                opacity: 0.75, 
                 scale: 1.08,
               }}
               exit={{ opacity: 0 }}
@@ -104,7 +117,7 @@ export default function Home() {
               />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/30 to-transparent" />
         </div>
 
         {/* Content */}
@@ -120,11 +133,7 @@ export default function Home() {
             </h1>
           </ScrollReveal>
 
-          <ScrollReveal variant="fade-up" duration={2.2} delay={0.3}>
-            <p className="text-base md:text-xl text-white/80 max-w-2xl font-sans font-light leading-relaxed">
-              KARVIN delivers high-performance, professional LED lighting solutions and turnkey installations for commercial hubs, heavy factories, and national infrastructure.
-            </p>
-          </ScrollReveal>
+
 
           <ScrollReveal variant="fade-up" duration={2.2} delay={0.45}>
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
@@ -238,17 +247,7 @@ export default function Home() {
               </h2>
             </ScrollReveal>
 
-            <ScrollReveal variant="slide-left" delay={0.2}>
-              <p className="text-base text-brand-gray leading-relaxed font-sans">
-                KARVIN Power Systems Pvt. Ltd. represents nearly two decades of core electronics and manufacturing expertise. Led by Managing Director Mr. Sanjay Agarwal, our group operates from Mumbai with a dedicated focus on engineering high-durability power conditioning and lighting products.
-              </p>
-            </ScrollReveal>
 
-            <ScrollReveal variant="slide-left" delay={0.3}>
-              <p className="text-base text-brand-gray leading-relaxed font-sans">
-                Together with leading architects, lighting designers, and corporate safety heads, we design and configure custom lighting grids. Rather than distributing mass imports, we design our electronics locally, ensuring we fulfill specific high-temperature constraints and voltage protection boundaries.
-              </p>
-            </ScrollReveal>
 
             <ScrollReveal variant="slide-left" delay={0.4} className="grid grid-cols-2 gap-6 pt-4 border-t border-brand-border">
               <div className="space-y-2">
@@ -280,6 +279,68 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 8. Trust Workflow Timeline */}
+      <section className="py-24 bg-brand-light-gray border-t border-brand-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-8">
+          <div className="max-w-3xl mb-16 space-y-4">
+            <ScrollReveal variant="text-mask-left">
+              <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
+                Our Process
+              </h4>
+            </ScrollReveal>
+            <ScrollReveal variant="text-mask-left" delay={0.1}>
+              <h2 className="font-serif font-black text-3xl md:text-5xl text-brand-dark leading-tight">
+                Why Corporate Clients Trust Us.
+              </h2>
+            </ScrollReveal>
+            <ScrollReveal variant="slide-right" delay={0.2}>
+              <p className="text-base text-brand-gray">
+                We guide each project through five engineering stages to guarantee full technical accountability.
+              </p>
+            </ScrollReveal>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 relative">
+            <div className="hidden md:block absolute top-[28px] left-[10%] right-[10%] h-[2px] bg-brand-border z-0" />
+            
+            <ScrollReveal variant="slide-right" delay={0.05} className="space-y-4 text-center md:text-left relative z-10">
+              <div className="w-14 h-14 bg-brand-red text-white font-display font-black text-lg rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-md">
+                01
+              </div>
+              <h4 className="font-display font-bold text-base text-brand-dark">Engineering</h4>
+            </ScrollReveal>
+
+            <ScrollReveal variant="slide-right" delay={0.15} className="space-y-4 text-center md:text-left relative z-10">
+              <div className="w-14 h-14 bg-brand-red text-white font-display font-black text-lg rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-md">
+                02
+              </div>
+              <h4 className="font-display font-bold text-base text-brand-dark">Design</h4>
+            </ScrollReveal>
+
+            <ScrollReveal variant="fade-up" delay={0.25} className="space-y-4 text-center md:text-left relative z-10">
+              <div className="w-14 h-14 bg-brand-red text-white font-display font-black text-lg rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-md">
+                03
+              </div>
+              <h4 className="font-display font-bold text-base text-brand-dark">Manufacturing</h4>
+            </ScrollReveal>
+
+            <ScrollReveal variant="slide-left" delay={0.35} className="space-y-4 text-center md:text-left relative z-10">
+              <div className="w-14 h-14 bg-brand-red text-white font-display font-black text-lg rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-md">
+                04
+              </div>
+              <h4 className="font-display font-bold text-base text-brand-dark">Installation</h4>
+            </ScrollReveal>
+
+            <ScrollReveal variant="slide-left" delay={0.45} className="space-y-4 text-center md:text-left relative z-10">
+              <div className="w-14 h-14 bg-brand-red text-white font-display font-black text-lg rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-md">
+                05
+              </div>
+              <h4 className="font-display font-bold text-base text-brand-dark">Support</h4>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
       {/* 4. Why Choose KARVIN Section */}
       <section className="py-24 bg-brand-light-gray border-t border-brand-border">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
@@ -294,11 +355,7 @@ export default function Home() {
                 A Value-Driven Partner for High-End Projects.
               </h2>
             </ScrollReveal>
-            <ScrollReveal variant="slide-right" delay={0.2}>
-              <p className="text-base text-brand-gray leading-relaxed">
-                We look beyond simple transactions. We partner with our clients to co-engineer systems that cut capital outlays while delivering reliable performance year after year.
-              </p>
-            </ScrollReveal>
+
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -319,9 +376,7 @@ export default function Home() {
                     <h3 className="font-display font-bold text-lg text-brand-dark">
                       {p.title}
                     </h3>
-                    <p className="text-sm text-brand-gray leading-relaxed">
-                      {p.desc}
-                    </p>
+
                   </div>
                 </div>
               </ScrollReveal>
@@ -366,7 +421,7 @@ export default function Home() {
                   className="flex"
                 >
                   <div 
-                    className="group relative h-[380px] rounded-2xl overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-end p-6 w-full"
+                    className="group relative h-[380px] rounded-tl-[32px] rounded-br-[32px] rounded-tr-md rounded-bl-md overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-end p-6 w-full"
                   >
                     <div className="absolute inset-0 z-0">
                       <Image
@@ -384,9 +439,7 @@ export default function Home() {
                       <h3 className="font-display font-bold text-lg">
                         {ind.name}
                       </h3>
-                      <p className="text-xs text-white/80 leading-relaxed line-clamp-2">
-                        {ind.description}
-                      </p>
+
                       <Link href={`/industries#${ind.slug}`} className="inline-flex items-center gap-1.5 text-xs font-display font-bold text-brand-red hover:text-white transition-colors pt-2">
                         View Challenges & Solutions <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
@@ -423,7 +476,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {PRODUCTS.slice(0, 6).map((prod, idx) => (
+            {displayedProducts.map((prod, idx) => (
               <ScrollReveal 
                 key={prod.id} 
                 variant={idx % 3 === 0 ? 'slide-right' : idx % 3 === 2 ? 'slide-left' : 'fade-up'} 
@@ -431,7 +484,7 @@ export default function Home() {
                 className="flex"
               >
                 <div 
-                  className="bg-white rounded-2xl overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-between group hover:border-brand-red/35 transition-colors duration-300 w-full"
+                  className="bg-white rounded-tr-[32px] rounded-bl-[32px] rounded-tl-md rounded-br-md overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-between group hover:border-brand-red/35 transition-colors duration-300 w-full"
                 >
                   <div>
                     <div className="relative h-[240px] w-full overflow-hidden bg-brand-light-gray">
@@ -449,17 +502,19 @@ export default function Home() {
                       <h3 className="font-display font-bold text-lg text-brand-dark group-hover:text-brand-red transition-colors">
                         {prod.name}
                       </h3>
-                      <p className="text-sm text-brand-gray leading-relaxed line-clamp-2">
-                        {prod.description}
-                      </p>
+                      {prod.description && (
+                        <p className="text-xs text-brand-gray leading-relaxed line-clamp-2">
+                          {prod.description}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="px-6 pb-6 pt-2 flex items-center justify-between border-t border-brand-border/40">
                     <span className="text-xs font-display font-bold text-brand-gray">
-                      {prod.specifications['Luminous Efficacy'] || 'High Efficacy'}
+                      {(prod.specifications as any)['Efficiency'] || (prod.specifications as any)['Efficiency (AC Mode)'] || (prod.specifications as any)['Luminous Efficacy'] || 'High Efficacy'}
                     </span>
-                    <Link href={`/products/${prod.slug}`} className="inline-flex items-center gap-1 text-xs font-display font-bold text-brand-red group-hover:gap-1.5 transition-all">
-                      View Specifications <ArrowRight className="w-3.5 h-3.5" />
+                    <Link href={`/contact?product=${encodeURIComponent(prod.name)}`} className="inline-flex items-center gap-1 text-xs font-display font-bold text-brand-red group-hover:gap-1.5 transition-all">
+                      Inquire Product <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
                 </div>
@@ -469,148 +524,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. Featured Projects Section */}
-      <section className="py-24 bg-white border-t border-brand-border">
-        <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <div className="max-w-3xl mb-16 space-y-4">
-            <ScrollReveal variant="text-mask-left">
-              <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
-                Engineering Showcases
-              </h4>
-            </ScrollReveal>
-            <ScrollReveal variant="text-mask-left" delay={0.1}>
-              <h2 className="font-serif font-black text-3xl md:text-5xl text-brand-dark leading-tight">
-                Powering Landmark Projects.
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal variant="slide-right" delay={0.2}>
-              <p className="text-base text-brand-gray">
-                We design and deliver custom systems that fulfill strict engineering safety audits across massive locations.
-              </p>
-            </ScrollReveal>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {PROJECTS.map((proj, idx) => (
-              <ScrollReveal 
-                key={proj.id} 
-                variant={idx % 3 === 0 ? 'slide-right' : idx % 3 === 2 ? 'slide-left' : 'fade-up'} 
-                delay={idx * 0.1}
-                className="flex"
-              >
-                <div 
-                  className="bg-white border border-brand-border rounded-2xl overflow-hidden luxury-shadow group flex flex-col justify-between w-full"
-                >
-                  <div>
-                    <div className="relative h-[250px] w-full overflow-hidden">
-                      <Image
-                        src={proj.image}
-                        alt={proj.name}
-                        fill
-                        className="object-cover group-hover:scale-102 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="p-6 space-y-3">
-                      <div className="flex items-center justify-between text-xs text-brand-gray font-display font-bold">
-                        <span>{proj.location}</span>
-                        <span>{proj.year}</span>
-                      </div>
-                      <h3 className="font-display font-extrabold text-xl text-brand-dark group-hover:text-brand-red transition-colors">
-                        {proj.name}
-                      </h3>
-                      <p className="text-sm text-brand-gray leading-relaxed line-clamp-3">
-                        {proj.description}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="px-6 pb-6 pt-4 border-t border-brand-border/40">
-                    <Link href="/projects" className="inline-flex items-center gap-1.5 text-xs font-display font-bold text-brand-red">
-                      View Case Analysis <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 8. Trust Workflow Timeline */}
-      <section className="py-24 bg-brand-light-gray border-t border-brand-border">
-        <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <div className="max-w-3xl mb-16 space-y-4">
-            <ScrollReveal variant="text-mask-left">
-              <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
-                Our Process
-              </h4>
-            </ScrollReveal>
-            <ScrollReveal variant="text-mask-left" delay={0.1}>
-              <h2 className="font-serif font-black text-3xl md:text-5xl text-brand-dark leading-tight">
-                Why Corporate Clients Trust Us.
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal variant="slide-right" delay={0.2}>
-              <p className="text-base text-brand-gray">
-                We guide each project through five engineering stages to guarantee full technical accountability.
-              </p>
-            </ScrollReveal>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 relative">
-            <div className="hidden md:block absolute top-[28px] left-[10%] right-[10%] h-[2px] bg-brand-border z-0" />
-            
-            <ScrollReveal variant="slide-right" delay={0.05} className="space-y-4 text-center md:text-left relative z-10">
-              <div className="w-14 h-14 bg-brand-red text-white font-display font-black text-lg rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-md">
-                01
-              </div>
-              <h4 className="font-display font-bold text-base text-brand-dark">Engineering</h4>
-              <p className="text-xs text-brand-gray leading-relaxed font-sans">
-                Initial lighting audit of voltage spikes, heat limits, and structural constraints.
-              </p>
-            </ScrollReveal>
-
-            <ScrollReveal variant="slide-right" delay={0.15} className="space-y-4 text-center md:text-left relative z-10">
-              <div className="w-14 h-14 bg-brand-red text-white font-display font-black text-lg rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-md">
-                02
-              </div>
-              <h4 className="font-display font-bold text-base text-brand-dark">Design</h4>
-              <p className="text-xs text-brand-gray leading-relaxed font-sans">
-                3D Dialux simulations and rendering profiles to outline exact target lux spreads.
-              </p>
-            </ScrollReveal>
-
-            <ScrollReveal variant="fade-up" delay={0.25} className="space-y-4 text-center md:text-left relative z-10">
-              <div className="w-14 h-14 bg-brand-red text-white font-display font-black text-lg rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-md">
-                03
-              </div>
-              <h4 className="font-display font-bold text-base text-brand-dark">Manufacturing</h4>
-              <p className="text-xs text-brand-gray leading-relaxed font-sans">
-                Assembling fixtures in Mumbai, integrating surge protected drivers and custom casings.
-              </p>
-            </ScrollReveal>
-
-            <ScrollReveal variant="slide-left" delay={0.35} className="space-y-4 text-center md:text-left relative z-10">
-              <div className="w-14 h-14 bg-brand-red text-white font-display font-black text-lg rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-md">
-                04
-              </div>
-              <h4 className="font-display font-bold text-base text-brand-dark">Installation</h4>
-              <p className="text-xs text-brand-gray leading-relaxed font-sans">
-                Deploying site teams with strict safety codes to execute electrical mounting.
-              </p>
-            </ScrollReveal>
-
-            <ScrollReveal variant="slide-left" delay={0.45} className="space-y-4 text-center md:text-left relative z-10">
-              <div className="w-14 h-14 bg-brand-red text-white font-display font-black text-lg rounded-full flex items-center justify-center mx-auto md:mx-0 shadow-md">
-                05
-              </div>
-              <h4 className="font-display font-bold text-base text-brand-dark">Support</h4>
-              <p className="text-xs text-brand-gray leading-relaxed font-sans">
-                Performance commissioning checks and custom AMC agreements to prevent downtime.
-              </p>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
 
       {/* 10. Let's Build Better Lighting Together (CTA) */}
       <section className="bg-brand-dark text-white py-24 relative overflow-hidden border-t border-white/5">
@@ -629,11 +543,7 @@ export default function Home() {
             </h2>
           </ScrollReveal>
           
-          <ScrollReveal variant="fade-up" delay={0.15}>
-            <p className="text-sm md:text-base text-white/70 max-w-xl mx-auto font-sans leading-relaxed">
-              Reach out to our Mumbai engineering office to coordinate a detailed lighting energy audit or request customized specifications for your site.
-            </p>
-          </ScrollReveal>
+
 
           <ScrollReveal variant="fade-up" delay={0.3}>
             <div className="pt-4 flex items-center justify-center gap-4 flex-col sm:flex-row">

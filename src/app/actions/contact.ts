@@ -34,21 +34,12 @@ export async function submitContactForm(formData: ContactFormData) {
   try {
     await submitLeadToGoogleSheets({
       name: formData.name,
-      companyName: formData.companyName,
       phone: formData.phone,
-      email: formData.email,
-      city: formData.city,
-      state: formData.state,
-      businessType: formData.businessType,
-      requirement: formData.requirement,
-      productInterested: formData.productInterested,
       message: formData.message,
-      budget: formData.budget,
-      timeline: formData.timeline,
-      source: formData.source,
       ip,
       userAgent,
     });
+
 
     return {
       success: true,

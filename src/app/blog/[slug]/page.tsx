@@ -150,28 +150,7 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
                 </ScrollReveal>
               );
             }
-            if (trimmed.match(/^\d+\./)) {
-              // Simple numbered list detection
-              const items = trimmed.split('\n');
-              return (
-                <ScrollReveal key={index} variant="slide-right" threshold={0.15}>
-                  <ol className="list-decimal list-inside space-y-2 pl-4">
-                    {items.map((item, keyIdx) => (
-                      <li key={keyIdx} className="pl-1">
-                        {item.replace(/^\d+\.\s*/, '')}
-                      </li>
-                    ))}
-                  </ol>
-                </ScrollReveal>
-              );
-            }
-            return (
-              <ScrollReveal key={index} variant="slide-right" threshold={0.15}>
-                <p className="leading-relaxed">
-                  {trimmed}
-                </p>
-              </ScrollReveal>
-            );
+            return null;
           })}
         </div>
 
@@ -196,9 +175,7 @@ export default async function BlogPostDetailPage({ params }: PageProps) {
                       <h4 className="font-display font-bold text-base text-brand-dark group-hover:text-brand-red transition-colors line-clamp-2">
                         {p.title}
                       </h4>
-                      <p className="text-xs text-brand-gray line-clamp-2">
-                        {p.excerpt}
-                      </p>
+
                     </div>
                     <Link
                       href={`/blog/${p.slug}`}

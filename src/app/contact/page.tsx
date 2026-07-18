@@ -5,9 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Mail, Phone, MapPin, Clock, Send, Check } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, Check, Facebook, Linkedin, Twitter, Instagram } from 'lucide-react';
 import Button from '@/components/ui/Button';
-import { Input, Textarea, Select } from '@/components/ui/Input';
+import { Input, Textarea } from '@/components/ui/Input';
 import { submitContactForm } from '@/app/actions/contact';
 import { contactSchema, type ContactFormData } from '@/lib/validation';
 import { motion } from 'framer-motion';
@@ -30,15 +30,14 @@ function ContactFormContent() {
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
-      productInterested: productParam,
       website_field: '',
     },
   });
 
-  // Pre-fill product if query param changes
+  // Pre-fill product in message if query param changes
   useEffect(() => {
     if (productParam) {
-      setValue('productInterested', productParam);
+      setValue('message', `Interested in product: ${productParam}\n\nAdditional requirements: `);
     }
   }, [productParam, setValue]);
 
@@ -87,11 +86,6 @@ function ContactFormContent() {
               Request Engineering Consultation
             </h1>
           </ScrollReveal>
-          <ScrollReveal variant="slide-right" delay={0.2}>
-            <p className="text-base text-white/70 max-w-2xl font-sans leading-relaxed">
-              Get in touch with our Mumbai corporate office. Reach out directly or complete the lead form below to submit a technical audit request.
-            </p>
-          </ScrollReveal>
         </div>
       </section>
 
@@ -100,22 +94,34 @@ function ContactFormContent() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
           {/* Left Column: Coordinates */}
-          <div className="lg:col-span-5 space-y-10">
+          <div className="lg:col-span-7 space-y-10">
             <div className="space-y-4">
               <ScrollReveal variant="text-mask-left">
                 <h2 className="font-serif font-black text-3xl text-brand-dark tracking-tight">
                   KARVIN Power Systems Pvt. Ltd.
                 </h2>
               </ScrollReveal>
-              <ScrollReveal variant="slide-right" delay={0.1}>
-                <p className="text-sm md:text-base text-brand-gray leading-relaxed font-sans">
-                  Our engineering teams and manufacturing operations are coordinated directly from Mumbai. Complete the form to establish a technical routing.
-                </p>
-              </ScrollReveal>
             </div>
 
+            {/* Google Map (Covering 50% of the left column height visually) */}
+            <ScrollReveal variant="slide-right" delay={0.15}>
+              <div className="w-full h-[500px] md:h-[550px] rounded-2xl overflow-hidden border border-brand-border luxury-shadow">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.7818451838634!2d72.8624131!3d19.0732439!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c8ef40000001%3A0xc07a8fe8b56f8f1c!2sBandra%20Kurla%20Complex%2C%20Bandra%20East%2C%20Mumbai%2C%20Maharashtra%20400051!5e0!3m2!1sen!2sin!4v1719398000000!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Mumbai HQ Map Location"
+                />
+              </div>
+            </ScrollReveal>
+
+            {/* Coordinates List (Moved below the map) */}
             <ul className="space-y-6">
-              <ScrollReveal variant="slide-right" delay={0.15}>
+              <ScrollReveal variant="slide-right" delay={0.2}>
                 <li className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-brand-red-light rounded-xl flex items-center justify-center text-brand-red shrink-0">
                     <MapPin className="w-5 h-5" />
@@ -127,7 +133,7 @@ function ContactFormContent() {
                 </li>
               </ScrollReveal>
 
-              <ScrollReveal variant="slide-right" delay={0.2}>
+              <ScrollReveal variant="slide-right" delay={0.25}>
                 <li className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-brand-red-light rounded-xl flex items-center justify-center text-brand-red shrink-0">
                     <Phone className="w-5 h-5" />
@@ -141,7 +147,7 @@ function ContactFormContent() {
                 </li>
               </ScrollReveal>
 
-              <ScrollReveal variant="slide-right" delay={0.25}>
+              <ScrollReveal variant="slide-right" delay={0.3}>
                 <li className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-brand-red-light rounded-xl flex items-center justify-center text-brand-red shrink-0">
                     <Mail className="w-5 h-5" />
@@ -155,7 +161,7 @@ function ContactFormContent() {
                 </li>
               </ScrollReveal>
 
-              <ScrollReveal variant="slide-right" delay={0.3}>
+              <ScrollReveal variant="slide-right" delay={0.35}>
                 <li className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-brand-red-light rounded-xl flex items-center justify-center text-brand-red shrink-0">
                     <Clock className="w-5 h-5" />
@@ -163,40 +169,63 @@ function ContactFormContent() {
                   <div className="font-sans text-sm text-brand-gray">
                     <h4 className="font-display font-bold text-brand-dark">Operational Hours</h4>
                     <p>Monday - Saturday: 09:00 AM - 06:00 PM IST</p>
-                    <p className="text-xs text-brand-red font-semibold mt-1">Quick Response Guarantee: Response within 24 Hours</p>
                   </div>
                 </li>
               </ScrollReveal>
             </ul>
 
-            {/* Google Map */}
-            <ScrollReveal variant="slide-right" delay={0.35}>
-              <div className="w-full h-[280px] rounded-2xl overflow-hidden border border-brand-border luxury-shadow">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.7818451838634!2d72.8624131!3d19.0732439!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c8ef40000001%3A0xc07a8fe8b56f8f1c!2sBandra%20Kurla%20Complex%2C%20Bandra%20East%2C%20Mumbai%2C%20Maharashtra%20400051!5e0!3m2!1sen!2sin!4v1719398000000!5m2!1sen!2sin"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen={false}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Mumbai HQ Map Location"
-                />
+            {/* Social Media Links */}
+            <ScrollReveal variant="slide-right" delay={0.4}>
+              <div className="space-y-3 pt-4 border-t border-brand-border/40">
+                <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
+                  Connect With Us
+                </h4>
+                <div className="flex items-center gap-4">
+                  <a
+                    href="https://linkedin.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-gray hover:bg-brand-red hover:text-white hover:border-brand-red transition-all shadow-sm"
+                  >
+                    <Linkedin className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-gray hover:bg-brand-red hover:text-white hover:border-brand-red transition-all shadow-sm"
+                  >
+                    <Facebook className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="https://twitter.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-gray hover:bg-brand-red hover:text-white hover:border-brand-red transition-all shadow-sm"
+                  >
+                    <Twitter className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-gray hover:bg-brand-red hover:text-white hover:border-brand-red transition-all shadow-sm"
+                  >
+                    <Instagram className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
             </ScrollReveal>
           </div>
 
           {/* Right Column: Lead Form */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-5">
             <ScrollReveal variant="slide-left" delay={0.15}>
               <div className="bg-brand-light-gray p-8 rounded-2xl border border-brand-border luxury-shadow h-full">
                 <div className="mb-6 space-y-2">
                   <h3 className="font-display font-bold text-xl text-brand-dark">
                     Submit Inquiry Form
                   </h3>
-                  <p className="text-xs text-brand-gray font-sans">
-                    Please complete all fields. Values will be logged to our secure lead registry.
-                  </p>
                 </div>
 
                 {submitSuccess ? (
@@ -210,7 +239,7 @@ function ContactFormContent() {
                     </div>
                     <h4 className="font-display font-bold text-lg text-brand-dark">Lead Submission Successful</h4>
                     <p className="text-sm text-brand-gray max-w-sm font-sans px-4">
-                      Thank you! Your technical specifications and contact details have been successfully written to Google Sheets. An engineer will follow up shortly.
+                      Thank you! Your inquiry has been submitted.
                     </p>
                   </motion.div>
                 ) : (
@@ -230,141 +259,24 @@ function ContactFormContent() {
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Input
-                        label="Full Name *"
-                        placeholder="John Doe"
-                        error={errors.name?.message}
-                        {...register('name')}
-                      />
-                      <Input
-                        label="Company Name *"
-                        placeholder="Acme Corporates"
-                        error={errors.companyName?.message}
-                        {...register('companyName')}
-                      />
-                    </div>
+                    <Input
+                      label="Full Name *"
+                      placeholder="John Doe"
+                      error={errors.name?.message}
+                      {...register('name')}
+                    />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Input
-                        label="Phone Number *"
-                        type="tel"
-                        placeholder="9876543210"
-                        error={errors.phone?.message}
-                        {...register('phone')}
-                      />
-                      <Input
-                        label="Email Address *"
-                        type="email"
-                        placeholder="john@acme.com"
-                        error={errors.email?.message}
-                        {...register('email')}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Input
-                        label="City *"
-                        placeholder="Mumbai"
-                        error={errors.city?.message}
-                        {...register('city')}
-                      />
-                      <Input
-                        label="State *"
-                        placeholder="Maharashtra"
-                        error={errors.state?.message}
-                        {...register('state')}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Select
-                        label="Business Type *"
-                        options={[
-                          { label: '-- Select --', value: '' },
-                          { label: 'Industrial Enterprise', value: 'Industrial Client' },
-                          { label: 'Architect / Lighting Designer', value: 'Architect / Designer' },
-                          { label: 'EPC Contractor', value: 'Contractor' },
-                          { label: 'Commercial Building Developer', value: 'Commercial Developer' },
-                          { label: 'Dealer / Distributor Inquiry', value: 'Dealer Inquiry' },
-                          { label: 'Infrastructure Developer', value: 'Infrastructure' },
-                        ]}
-                        error={errors.businessType?.message}
-                        {...register('businessType')}
-                      />
-                      <Select
-                        label="Requirement Purpose *"
-                        options={[
-                          { label: '-- Select --', value: '' },
-                          { label: 'Energy Audit & Retrofit Study', value: 'Energy Audit' },
-                          { label: 'Custom Fixture Engineering', value: 'Custom Fabrication' },
-                          { label: 'Procurement Supply Only', value: 'Supply' },
-                          { label: 'Turnkey Design & Installation', value: 'Turnkey Installation' },
-                          { label: 'Dealer Dealership Inquiry', value: 'Dealer Dealership' },
-                        ]}
-                        error={errors.requirement?.message}
-                        {...register('requirement')}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <Select
-                        label="Product Category *"
-                        options={[
-                          { label: '-- Select --', value: '' },
-                          { label: 'Industrial (High Bay / Low Bay)', value: 'Industrial' },
-                          { label: 'Street Lights (Highway)', value: 'Street Lights' },
-                          { label: 'Flood Lights (High-Mast)', value: 'Flood Lights' },
-                          { label: 'Architectural Profiles & Linears', value: 'Architectural' },
-                          { label: 'Indoor Downlights / Panels', value: 'Indoor' },
-                          { label: 'Bespoke Custom Solutions', value: 'Customized' },
-                        ]}
-                        error={errors.productInterested?.message}
-                        {...register('productInterested')}
-                      />
-                      <Select
-                        label="Estimated Budget *"
-                        options={[
-                          { label: '-- Select --', value: '' },
-                          { label: 'Under ₹1 Lakh', value: 'Under 1L' },
-                          { label: '₹1 Lakh - ₹5 Lakhs', value: '1L - 5L' },
-                          { label: '₹5 Lakhs - ₹20 Lakhs', value: '5L - 20L' },
-                          { label: 'Above ₹20 Lakhs', value: 'Above 20L' },
-                        ]}
-                        error={errors.budget?.message}
-                        {...register('budget')}
-                      />
-                      <Select
-                        label="Project Timeline *"
-                        options={[
-                          { label: '-- Select --', value: '' },
-                          { label: 'Immediate (< 15 days)', value: 'Immediate' },
-                          { label: 'Within 30 Days', value: '1 Month' },
-                          { label: '1 to 3 Months', value: '1-3 Months' },
-                          { label: 'Planning / Estimation Stage', value: 'Planning' },
-                        ]}
-                        error={errors.timeline?.message}
-                        {...register('timeline')}
-                      />
-                    </div>
-
-                    <Select
-                      label="How did you hear about KARVIN? *"
-                      options={[
-                        { label: '-- Select --', value: '' },
-                        { label: 'Search Engine (Google)', value: 'Google Search' },
-                        { label: 'Industry Exhibition / Brochure', value: 'Exhibition' },
-                        { label: 'LinkedIn', value: 'LinkedIn' },
-                        { label: 'Client / Architect Recommendation', value: 'Recommendation' },
-                        { label: 'Direct Representative Visit', value: 'Direct Visit' },
-                      ]}
-                      error={errors.source?.message}
-                      {...register('source')}
+                    <Input
+                      label="Phone Number *"
+                      type="tel"
+                      placeholder="9876543210"
+                      error={errors.phone?.message}
+                      {...register('phone')}
                     />
 
                     <Textarea
-                      label="Detailed Requirement / Technical Specifications *"
-                      placeholder="Outline your targets: mounting height, area dimensions, target lux levels, driver specifications, etc."
+                      label="Remark / Additional Requirement *"
+                      placeholder="Enter details..."
                       error={errors.message?.message}
                       {...register('message')}
                     />
@@ -373,7 +285,7 @@ function ContactFormContent() {
                       <Button
                         type="submit"
                         loading={isSubmitting}
-                        className="w-full sm:w-auto animate-pulse-slow font-bold"
+                        className="w-full sm:w-auto font-bold"
                         icon={<Send className="w-4 h-4" />}
                       >
                         Submit Technical Lead

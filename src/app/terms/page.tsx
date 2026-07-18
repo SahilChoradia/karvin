@@ -43,36 +43,24 @@ export default function TermsOfUsePage() {
         {/* Contents */}
         <div className="prose text-brand-gray text-sm md:text-base leading-relaxed space-y-6">
           <p>
-            Welcome to the corporate website of **KARVIN Power Systems Pvt. Ltd.** (`karvinpower.com`). By accessing our website, browsing our product catalogs, or downloading technical data sheets, you agree to comply with the following conditions of usage.
+            **KARVIN Power Systems Pvt. Ltd.**
           </p>
 
           <h3 className="font-display font-bold text-lg text-brand-dark pt-4">
             1. Intellectual Property
           </h3>
-          <p>
-            All content on this website—including the SVGs, logos, custom vector graphics, layouts, project case logs, blog whitepapers, and driver engineering descriptions—is the property of KARVIN Power Systems Pvt. Ltd. and is protected by Indian and international copyright laws. Reproduction of any materials without written authorization is strictly prohibited.
-          </p>
 
           <h3 className="font-display font-bold text-lg text-brand-dark pt-4">
             2. Product Data & Catalog Disclaimer
           </h3>
-          <p>
-            The specifications, wattages, and luminous efficacy values provided in our catalog represent average values obtained under laboratory conditions. Actual site metrics may vary depending on ambient heat dissipation, structural configurations, and local voltage parameters. We reserve the right to modify technical layouts without prior notice as part of our continuous R&D improvements.
-          </p>
 
           <h3 className="font-display font-bold text-lg text-brand-dark pt-4">
             3. B2B Leads Submission
           </h3>
-          <p>
-            By submitting an inquiry or project audit request, you verify that the email address and contact coordinates provided represent active corporate coordinates. Submitting false data, duplicate queries, or automated spam through our honeypot-protected forms will result in immediate IP banning from our server actions.
-          </p>
 
           <h3 className="font-display font-bold text-lg text-brand-dark pt-4">
             4. Limitation of Liability
           </h3>
-          <p>
-            KARVIN Power Systems Pvt. Ltd. will not be held liable for any operational losses or safety incidents occurring from installations executed by unauthorized third-party contractors who fail to comply with our product manuals and safety codes.
-          </p>
         </div>
       </div>
     </div>

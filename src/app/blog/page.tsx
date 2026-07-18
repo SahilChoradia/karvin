@@ -29,11 +29,7 @@ export default function BlogListingPage() {
               Knowledge Hub
             </h1>
           </ScrollReveal>
-          <ScrollReveal variant="slide-right" delay={0.2}>
-            <p className="text-base text-white/70 max-w-2xl font-sans leading-relaxed">
-              Read detailed articles, technical whitepapers, and guides regarding industrial LED efficiencies compiled by our R&D electronics division.
-            </p>
-          </ScrollReveal>
+
         </div>
       </section>
 
@@ -72,9 +68,7 @@ export default function BlogListingPage() {
                       {post.title}
                     </h3>
 
-                    <p className="text-sm text-brand-gray leading-relaxed font-sans line-clamp-3">
-                      {post.excerpt}
-                    </p>
+
                   </div>
                 </div>
 
@@ -107,11 +101,7 @@ export default function BlogListingPage() {
               Subscribe to Technical Updates
             </h2>
           </ScrollReveal>
-          <ScrollReveal variant="fade-up" delay={0.2}>
-            <p className="text-sm text-brand-gray font-sans max-w-md mx-auto">
-              Get notified when our engineering division publishes new research on industrial power safety and luminaire standards.
-            </p>
-          </ScrollReveal>
+
           <ScrollReveal variant="fade-up" delay={0.3}>
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
               <input
