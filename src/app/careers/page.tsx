@@ -78,7 +78,19 @@ export default function CareersPage() {
       }
     } catch (err) {
       const error = err as Error;
-      setSubmitError(error.message || 'Failed to submit application.');
+      const isSkewError = error.message && (
+        error.message.includes('not found on the server') ||
+        error.message.includes('Server Action') ||
+        error.message.includes('failed-to-find-server-action')
+      );
+      if (isSkewError) {
+        setSubmitError('A new version of the website has been deployed. Reloading page to apply updates...');
+        setTimeout(() => {
+          window.location.reload();
+        }, 2500);
+      } else {
+        setSubmitError(error.message || 'Failed to submit application.');
+      }
     } finally {
       setIsSubmitting(false);
     }

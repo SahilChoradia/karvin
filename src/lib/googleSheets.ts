@@ -8,7 +8,7 @@ export interface LeadData {
   businessType?: string;
   requirement?: string;
   productInterested?: string;
-  message: string;
+  message?: string;
   budget?: string;
   timeline?: string;
   source?: string;

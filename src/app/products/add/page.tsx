@@ -116,8 +116,21 @@ export default function AddProductPage() {
       } else {
         setErrorMsg(result.message || 'Failed to add the product.');
       }
-    } catch {
-      setErrorMsg('An unexpected error occurred during submission.');
+    } catch (err) {
+      const error = err as Error;
+      const isSkewError = error.message && (
+        error.message.includes('not found on the server') ||
+        error.message.includes('Server Action') ||
+        error.message.includes('failed-to-find-server-action')
+      );
+      if (isSkewError) {
+        setErrorMsg('A new version of the website has been deployed. Reloading page to apply updates...');
+        setTimeout(() => {
+          window.location.reload();
+        }, 2500);
+      } else {
+        setErrorMsg('An unexpected error occurred during submission.');
+      }
     } finally {
       setIsSubmitting(false);
     }

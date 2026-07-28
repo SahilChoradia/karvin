@@ -35,7 +35,7 @@ export async function submitContactForm(formData: ContactFormData) {
     await submitLeadToGoogleSheets({
       name: formData.name,
       phone: formData.phone,
-      message: formData.message,
+      message: formData.message || '',
       ip,
       userAgent,
     });

@@ -57,7 +57,19 @@ function ContactFormContent() {
       }
     } catch (err) {
       const error = err as Error;
-      setSubmitError(error.message || 'Submission failed. Please try again.');
+      const isSkewError = error.message && (
+        error.message.includes('not found on the server') ||
+        error.message.includes('Server Action') ||
+        error.message.includes('failed-to-find-server-action')
+      );
+      if (isSkewError) {
+        setSubmitError('A new version of the website has been deployed. Reloading page to apply updates...');
+        setTimeout(() => {
+          window.location.reload();
+        }, 2500);
+      } else {
+        setSubmitError(error.message || 'Submission failed. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -275,7 +287,7 @@ function ContactFormContent() {
                     />
 
                     <Textarea
-                      label="Remark / Additional Requirement *"
+                      label="Remark / Additional Requirement"
                       placeholder="Enter details..."
                       error={errors.message?.message}
                       {...register('message')}
