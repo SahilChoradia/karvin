@@ -5,15 +5,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Factory, Building2, Hotel, ShieldCheck, Cpu, Zap, Settings, 
-  CheckCircle2, Award, HeartHandshake, ArrowRight,
+  Factory, Building2, Hotel, 
+  CheckCircle2, Award, ArrowRight,
   Compass, Building
 } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
 import ScrollReveal from '@/components/ui/ScrollReveal';
-import { PRODUCTS, INDUSTRIES } from '@/lib/data';
-import { POWER_PRODUCTS } from '@/lib/powerData';
+import { INDUSTRIES } from '@/lib/data';
 
 // Industries served data mapper
 const industryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -22,16 +21,6 @@ const industryIcons: Record<string, React.ComponentType<{ className?: string }>>
   'Hotel': Hotel,
   'Compass': Compass,
 };
-
-interface CompatProduct {
-  id: string;
-  name: string;
-  category: string;
-  parentCategory: string;
-  description: string;
-  image: string;
-  specifications: Record<string, string | undefined>;
-}
 
 export default function Home() {
   const heroImages = [
@@ -42,7 +31,6 @@ export default function Home() {
   ];
 
   const [heroImageIdx, setHeroImageIdx] = useState(0);
-  const [randomPowerProducts, setRandomPowerProducts] = useState<CompatProduct[]>([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -50,51 +38,6 @@ export default function Home() {
     }, 7000); // 7 seconds per slide
     return () => clearInterval(timer);
   }, [heroImages.length]);
-
-  useEffect(() => {
-    // Pick 3 random power products on mount
-    const shuffled = [...POWER_PRODUCTS].sort(() => 0.5 - Math.random());
-    setRandomPowerProducts(shuffled.slice(0, 3) as unknown as CompatProduct[]);
-  }, []);
-
-  const displayedProducts = [
-    ...(PRODUCTS.slice(0, 6) as unknown as CompatProduct[]),
-    ...randomPowerProducts
-  ];
-
-  // Why Choose Karvin Details
-  const pillars = [
-    {
-      title: 'In-House Driver Engineering',
-      desc: 'Our dedicated driver division custom builds SMPS power supplies designed specifically to withstand Indian grid fluctuations up to 320V.',
-      icon: Cpu
-    },
-    {
-      title: 'ISO & Quality Benchmarks',
-      desc: 'An ISO certified company employing continuous R&D, advanced thermal chambers, and photometrics verification for 100% defect-free dispatches.',
-      icon: ShieldCheck
-    },
-    {
-      title: 'Turnkey Lighting Projects',
-      desc: 'From Dialux 3D layout simulations to mechanical installations and AMC support, we handle large project sites end-to-end.',
-      icon: Settings
-    },
-    {
-      title: 'Energy Efficient Solutions',
-      desc: 'Deploying high efficacy LEDs (up to 160 lm/W) that shorten capital ROI payback cycles to 12-18 months.',
-      icon: Zap
-    },
-    {
-      title: 'Bespoke Customization',
-      desc: 'Working directly with architects to construct non-standard linear layouts, geometric poles, and unique decorative profiles.',
-      icon: Factory
-    },
-    {
-      title: 'Exceptional After-Sales Support',
-      desc: 'Our commitment extends beyond delivery. We offer on-site commissioning, training, and custom annual maintenance contracts.',
-      icon: HeartHandshake
-    }
-  ];
 
 
   return (
@@ -217,68 +160,41 @@ export default function Home() {
 
       {/* 3. Company Overview Section */}
       <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Image Block */}
-          <ScrollReveal variant="slide-right" duration={2.2}>
-            <div className="relative h-[480px] rounded-2xl overflow-hidden border border-brand-border luxury-shadow bg-brand-light-gray">
-              <Image
-                src="/images/illuminate-world.png"
-                alt="KARVIN Premium Outdoor Solutions"
-                fill
-                className="object-cover"
-                priority
-              />
-              {/* Tag overlay */}
-              <div className="absolute bottom-6 left-6 bg-white py-3 px-5 rounded-xl border border-brand-border luxury-shadow">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-brand-red-light rounded-lg">
-                    <Award className="w-6 h-6 text-brand-red" />
-                  </div>
-                  <div>
-                    <h4 className="font-display font-bold text-sm text-brand-dark">Benchmarked Tech</h4>
-                    <p className="text-xs text-brand-gray">R&D and quality-focused assembly</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
-
+        <div className="max-w-3xl mx-auto px-6 md:px-8 space-y-8">
           {/* Text Block */}
           <div className="space-y-6">
-            <ScrollReveal variant="text-mask-right">
+            <ScrollReveal variant="text-mask-left">
               <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
                 Corporate Overview
               </h4>
             </ScrollReveal>
 
-            <ScrollReveal variant="text-mask-right" delay={0.1}>
-              <h2 className="font-serif font-black text-3xl md:text-4xl text-brand-dark leading-tight">
-                Benchmarking Indigenous Technology for Quality LED Lighting.
+            <ScrollReveal variant="text-mask-left" delay={0.1}>
+              <h2 className="font-serif font-black text-3xl md:text-5xl text-brand-dark leading-tight">
+                Benchmarking Indigenous Technology.
               </h2>
             </ScrollReveal>
 
-
-
-            <ScrollReveal variant="slide-left" delay={0.4} className="grid grid-cols-2 gap-6 pt-4 border-t border-brand-border">
-              <div className="space-y-2">
-                <h4 className="font-display font-bold text-brand-dark text-sm flex items-center gap-2">
-                  <CheckCircle2 className="w-4.5 h-4.5 text-brand-red" /> Mission
+            <ScrollReveal variant="slide-right" delay={0.3} className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-brand-border">
+              <div className="space-y-3">
+                <h4 className="font-display font-bold text-brand-dark text-base flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-brand-red" /> Mission
                 </h4>
-                <p className="text-xs text-brand-gray leading-relaxed">
+                <p className="text-sm text-brand-gray leading-relaxed">
                   Deliver energy-saving systems that enhance security, output lux levels, and operational productivity.
                 </p>
               </div>
-              <div className="space-y-2">
-                <h4 className="font-display font-bold text-brand-dark text-sm flex items-center gap-2">
-                  <CheckCircle2 className="w-4.5 h-4.5 text-brand-red" /> Vision
+              <div className="space-y-3">
+                <h4 className="font-display font-bold text-brand-dark text-base flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-brand-red" /> Vision
                 </h4>
-                <p className="text-xs text-brand-gray leading-relaxed">
+                <p className="text-sm text-brand-gray leading-relaxed">
                   Pioneer advanced, smart-grid integrated lighting designs that make every Watt matter.
                 </p>
               </div>
             </ScrollReveal>
 
-            <ScrollReveal variant="slide-left" delay={0.5} className="pt-4">
+            <ScrollReveal variant="slide-right" delay={0.4} className="pt-4">
               <Link href="/about">
                 <Button variant="outline" icon={<ArrowRight className="w-4 h-4" />}>
                   Learn More About Us
@@ -351,50 +267,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Why Choose KARVIN Section */}
-      <section className="py-24 bg-brand-light-gray border-t border-brand-border">
-        <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <div className="max-w-3xl mb-16 space-y-4">
-            <ScrollReveal variant="text-mask-left">
-              <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
-                Engineering Value
-              </h4>
-            </ScrollReveal>
-            <ScrollReveal variant="text-mask-left" delay={0.1}>
-              <h2 className="font-serif font-black text-3xl md:text-5xl text-brand-dark leading-tight">
-                A Value-Driven Partner for High-End Projects.
-              </h2>
-            </ScrollReveal>
-
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {pillars.map((p, idx) => (
-              <ScrollReveal 
-                key={idx} 
-                variant={idx % 3 === 0 ? 'slide-right' : idx % 3 === 2 ? 'slide-left' : 'fade-up'} 
-                delay={idx * 0.08}
-                className="flex"
-              >
-                <div 
-                  className="bg-white p-8 rounded-2xl border border-brand-border luxury-shadow flex flex-col justify-between group hover:border-brand-red/45 transition-colors duration-300 w-full"
-                >
-                  <div className="space-y-4">
-                    <div className="w-12 h-12 bg-brand-red-light rounded-xl flex items-center justify-center text-brand-red group-hover:bg-brand-red group-hover:text-white transition-all duration-300">
-                      <p.icon className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-display font-bold text-lg text-brand-dark">
-                      {p.title}
-                    </h3>
-
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 5. Industries We Serve */}
       <section className="py-24 bg-white border-t border-brand-border">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
@@ -420,7 +292,7 @@ export default function Home() {
             </ScrollReveal>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 snap-x snap-mandatory no-scrollbar scroll-smooth">
             {INDUSTRIES.map((ind, idx) => {
               const IconComp = industryIcons[ind.iconName] || Building;
               return (
@@ -428,10 +300,10 @@ export default function Home() {
                   key={ind.id} 
                   variant={idx % 4 < 2 ? 'slide-right' : 'slide-left'} 
                   delay={idx * 0.08}
-                  className="flex"
+                  className="flex shrink-0 w-[85vw] sm:w-[320px] md:w-auto snap-center md:snap-none"
                 >
                   <div 
-                    className="group relative h-[380px] rounded-tl-[32px] rounded-br-[32px] rounded-tr-md rounded-bl-md overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-end p-6 w-full"
+                    className="group relative h-[380px] rounded-tl-[32px] rounded-br-[32px] rounded-tr-md rounded-bl-md overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-end p-6 w-full cursor-pointer"
                   >
                     <div className="absolute inset-0 z-0">
                       <Image
@@ -440,96 +312,40 @@ export default function Home() {
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/45 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent transition-all duration-300 group-hover:from-brand-dark group-hover:via-brand-dark/85" />
                     </div>
-                    <div className="relative z-10 space-y-3 text-white">
-                      <div className="w-10 h-10 bg-white/15 backdrop-blur-md rounded-lg flex items-center justify-center text-white border border-white/10">
+                    <div className="relative z-10 space-y-3 text-white transition-transform duration-300">
+                      <div className="w-10 h-10 bg-white/15 backdrop-blur-md rounded-lg flex items-center justify-center text-white border border-white/10 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300">
                         <IconComp className="w-5 h-5" />
                       </div>
-                      <h3 className="font-display font-bold text-lg">
+                      <h3 className="font-display font-bold text-lg leading-snug">
                         {ind.name}
                       </h3>
 
+                      {/* Products List revealed on hover */}
+                      <div className="max-h-0 overflow-hidden opacity-0 group-hover:max-h-[140px] group-hover:opacity-100 transition-all duration-500 ease-out space-y-2">
+                        <div className="w-8 h-[2px] bg-brand-red rounded mt-2" />
+                        <p className="text-[10px] uppercase tracking-widest text-brand-red font-extrabold">
+                          Recommended Products
+                        </p>
+                        <ul className="space-y-1 text-xs text-brand-light-gray/90 font-display">
+                          {ind.recommendedProducts.map((prod, pIdx) => (
+                            <li key={pIdx} className="flex items-center gap-2">
+                              <span className="w-1 h-1 rounded-full bg-brand-red shrink-0" />
+                              <span className="truncate">{prod}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
                       <Link href={`/industries#${ind.slug}`} className="inline-flex items-center gap-1.5 text-xs font-display font-bold text-brand-red hover:text-white transition-colors pt-2">
-                        View Challenges & Solutions <ArrowRight className="w-3.5 h-3.5" />
+                        View Challenges & Solutions <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
                       </Link>
                     </div>
                   </div>
                 </ScrollReveal>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Product Categories */}
-      <section className="py-24 bg-brand-light-gray border-t border-brand-border">
-        <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div className="max-w-2xl space-y-4">
-              <ScrollReveal variant="text-mask-left">
-                <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
-                  Product Portfolio
-                </h4>
-              </ScrollReveal>
-              <ScrollReveal variant="text-mask-left" delay={0.1}>
-                <h2 className="font-serif font-black text-3xl md:text-5xl text-brand-dark leading-tight">
-                  Designed for Performance.
-                </h2>
-              </ScrollReveal>
-            </div>
-            <ScrollReveal variant="slide-left" delay={0.2}>
-              <Link href="/products">
-                <Button variant="primary">Explore Full Catalog</Button>
-              </Link>
-            </ScrollReveal>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayedProducts.map((prod, idx) => (
-              <ScrollReveal 
-                key={prod.id} 
-                variant={idx % 3 === 0 ? 'slide-right' : idx % 3 === 2 ? 'slide-left' : 'fade-up'} 
-                delay={idx * 0.06}
-                className="flex"
-              >
-                <div 
-                  className="bg-white rounded-tr-[32px] rounded-bl-[32px] rounded-tl-md rounded-br-md overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-between group hover:border-brand-red/35 transition-colors duration-300 w-full"
-                >
-                  <div>
-                    <div className="relative h-[240px] w-full overflow-hidden bg-brand-light-gray">
-                      <Image
-                        src={prod.image}
-                        alt={prod.name}
-                        fill
-                        className="object-cover group-hover:scale-102 transition-transform duration-500"
-                      />
-                      <div className="absolute top-4 left-4 bg-brand-dark text-white text-[10px] font-display font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        {prod.category}
-                      </div>
-                    </div>
-                    <div className="p-6 space-y-3">
-                      <h3 className="font-display font-bold text-lg text-brand-dark group-hover:text-brand-red transition-colors">
-                        {prod.name}
-                      </h3>
-                      {prod.description && (
-                        <p className="text-xs text-brand-gray leading-relaxed line-clamp-2">
-                          {prod.description}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="px-6 pb-6 pt-2 flex items-center justify-between border-t border-brand-border/40">
-                    <span className="text-xs font-display font-bold text-brand-gray">
-                      {prod.specifications['Efficiency'] || prod.specifications['Efficiency (AC Mode)'] || prod.specifications['Luminous Efficacy'] || 'High Efficacy'}
-                    </span>
-                    <Link href={`/contact?product=${encodeURIComponent(prod.name)}`} className="inline-flex items-center gap-1 text-xs font-display font-bold text-brand-red group-hover:gap-1.5 transition-all">
-                      Inquire Product <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
           </div>
         </div>
       </section>
