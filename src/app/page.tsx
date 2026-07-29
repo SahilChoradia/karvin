@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Factory, Building2, Hotel, 
-  CheckCircle2, Award, ArrowRight,
+  CheckCircle2, ArrowRight,
   Compass, Building
 } from 'lucide-react';
 import Button from '@/components/ui/Button';
@@ -78,10 +78,10 @@ export default function Home() {
 
 
           <ScrollReveal variant="text-mask" duration={2.4} delay={0.1}>
-            <h1 className="font-serif font-extrabold text-4xl md:text-6xl lg:text-7xl leading-tight tracking-tight max-w-4xl">
-              Illuminating India&apos;s <br />
+            <h1 className="font-serif font-extrabold text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight max-w-4xl">
+              Redefining Energy with <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-brand-red">
-                Excellence
+                Lighting and Power Products
               </span>
             </h1>
           </ScrollReveal>
@@ -89,11 +89,21 @@ export default function Home() {
 
 
           <ScrollReveal variant="fade-up" duration={2.2} delay={0.45}>
-            <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-              <Link href="/contact">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Request Engineering Quote
-                </Button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 pt-4 font-sans text-xs md:text-sm font-bold tracking-widest text-white/80 uppercase">
+              <Link 
+                href="/products?category=Power+Products" 
+                className="hover:text-brand-red transition-colors duration-300 relative group cursor-pointer py-1"
+              >
+                UPS & STABILIZERS
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-red transition-all duration-300 group-hover:w-full" />
+              </Link>
+              <span className="hidden sm:inline text-white/30 text-lg select-none">|</span>
+              <Link 
+                href="/products?category=Lighting" 
+                className="hover:text-brand-red transition-colors duration-300 relative group cursor-pointer py-1"
+              >
+                LED DRIVERS & LIGHTINGS
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-red transition-all duration-300 group-hover:w-full" />
               </Link>
             </div>
           </ScrollReveal>
@@ -268,10 +278,10 @@ export default function Home() {
       </section>
 
       {/* 5. Industries We Serve */}
-      <section className="py-24 bg-white border-t border-brand-border">
+      <section className="py-24 bg-white border-t border-brand-border overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div className="max-w-2xl space-y-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-brand-border/40 pb-8">
+            <div className="space-y-3">
               <ScrollReveal variant="text-mask-left">
                 <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
                   Application Expertise
@@ -283,16 +293,9 @@ export default function Home() {
                 </h2>
               </ScrollReveal>
             </div>
-            <ScrollReveal variant="slide-left" delay={0.2}>
-              <Link href="/industries">
-                <Button variant="outline" icon={<ArrowRight className="w-4 h-4" />}>
-                  View All Industries
-                </Button>
-              </Link>
-            </ScrollReveal>
           </div>
 
-          <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 snap-x snap-mandatory no-scrollbar scroll-smooth">
+          <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 snap-x snap-mandatory no-scrollbar scroll-smooth">
             {INDUSTRIES.map((ind, idx) => {
               const IconComp = industryIcons[ind.iconName] || Building;
               return (
@@ -303,7 +306,7 @@ export default function Home() {
                   className="flex shrink-0 w-[85vw] sm:w-[320px] md:w-auto snap-center md:snap-none"
                 >
                   <div 
-                    className="group relative h-[380px] rounded-tl-[32px] rounded-br-[32px] rounded-tr-md rounded-bl-md overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-end p-6 w-full cursor-pointer"
+                    className="group relative h-[380px] rounded-none overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-end p-6 w-full cursor-default transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:border-brand-red/30"
                   >
                     <div className="absolute inset-0 z-0">
                       <Image
@@ -337,10 +340,6 @@ export default function Home() {
                           ))}
                         </ul>
                       </div>
-
-                      <Link href={`/industries#${ind.slug}`} className="inline-flex items-center gap-1.5 text-xs font-display font-bold text-brand-red hover:text-white transition-colors pt-2">
-                        View Challenges & Solutions <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
-                      </Link>
                     </div>
                   </div>
                 </ScrollReveal>

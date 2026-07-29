@@ -27,7 +27,7 @@ export default function FloatingActions() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3.5">
       {/* WhatsApp Button */}
       <motion.a
         href="https://wa.me/912212345678?text=Hello%20KARVIN%20Power%20Systems%2C%20I%20am%20interested%20in%20your%20lighting%20solutions."

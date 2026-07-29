@@ -17,9 +17,9 @@ export default function Footer() {
             <Image
               src="/logo.png"
               alt="KARVIN"
-              width={109}
-              height={36}
-              className="h-9 w-auto object-contain brightness-0 invert"
+              width={145}
+              height={48}
+              className="h-12 w-auto object-contain brightness-0 invert"
             />
           </div>
           <p className="text-sm text-white/60 leading-relaxed font-sans">
@@ -70,11 +70,6 @@ export default function Footer() {
             <li>
               <Link href="/products" className="text-white/60 hover:text-brand-red text-sm font-medium transition-colors block">
                 Lighting Products
-              </Link>
-            </li>
-            <li>
-              <Link href="/industries" className="text-white/60 hover:text-brand-red text-sm font-medium transition-colors block">
-                Industries Served
               </Link>
             </li>
             <li>
