@@ -8,7 +8,6 @@ import { Menu, X, Search, ChevronDown, Phone, Mail, ArrowRight, FileText, Settin
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '@/components/ui/Button';
 import { PRODUCTS, SERVICES, BLOG_POSTS } from '@/lib/data';
-import { PRODUCTS, SERVICES, BLOG_POSTS } from '@/lib/data';
 import { POWER_PRODUCTS } from '@/lib/powerData';
 import { cn } from '@/lib/utils';
 
@@ -18,7 +17,6 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeMegaMenu, setActiveMegaMenu] = useState<'products' | null>(null);
   const [activeMegaMenu, setActiveMegaMenu] = useState<'products' | null>(null);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
 
@@ -63,13 +61,11 @@ export default function Header() {
   // Search state & filter logic for the entire website
   const getSearchResults = () => {
     if (!searchQuery) return { products: [], services: [], blogs: [] };
-    if (!searchQuery) return { products: [], services: [], blogs: [] };
     const query = searchQuery.toLowerCase();
 
     const matchedProducts = [
       ...PRODUCTS.map(p => ({ ...p, parentCategory: 'Lighting' })),
       ...POWER_PRODUCTS
-    ].filter(p =>
     ].filter(p =>
       p.name.toLowerCase().includes(query) ||
       p.category.toLowerCase().includes(query) ||
@@ -94,7 +90,6 @@ export default function Header() {
   };
 
   const results = getSearchResults();
-  const hasResults = results.products.length > 0 || results.services.length > 0 || results.blogs.length > 0;
   const hasResults = results.products.length > 0 || results.services.length > 0 || results.blogs.length > 0;
 
   return (
@@ -134,8 +129,6 @@ export default function Header() {
                   : isScrolled || activeMegaMenu || pathname !== '/'
                     ? 'text-brand-dark'
                     : 'text-white'
-                    ? 'text-brand-dark'
-                    : 'text-white'
               )}
             >
               Home
@@ -148,8 +141,6 @@ export default function Header() {
                 pathname === '/about'
                   ? 'text-brand-red'
                   : isScrolled || activeMegaMenu || pathname !== '/'
-                    ? 'text-brand-dark'
-                    : 'text-white'
                     ? 'text-brand-dark'
                     : 'text-white'
               )}
@@ -171,8 +162,6 @@ export default function Header() {
                     : isScrolled || activeMegaMenu || pathname !== '/'
                       ? 'text-brand-dark'
                       : 'text-white'
-                      ? 'text-brand-dark'
-                      : 'text-white'
                 )}
               >
                 Products <ChevronDown className="w-4 h-4" />
@@ -190,8 +179,6 @@ export default function Header() {
                   : isScrolled || activeMegaMenu || pathname !== '/'
                     ? 'text-brand-dark'
                     : 'text-white'
-                    ? 'text-brand-dark'
-                    : 'text-white'
               )}
             >
               Services
@@ -206,8 +193,6 @@ export default function Header() {
                 pathname === '/blog'
                   ? 'text-brand-red'
                   : isScrolled || activeMegaMenu || pathname !== '/'
-                    ? 'text-brand-dark'
-                    : 'text-white'
                     ? 'text-brand-dark'
                     : 'text-white'
               )}
