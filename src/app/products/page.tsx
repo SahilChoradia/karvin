@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Search, SlidersHorizontal, ArrowRight, X } from 'lucide-react';
+import { Search, ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PRODUCTS } from '@/lib/data';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -22,6 +22,15 @@ function ProductsCatalogContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [selectedProductForSpecs, setSelectedProductForSpecs] = useState<typeof allCatalogProducts[number] | null>(null);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollFilters = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = direction === 'left' ? -240 : 240;
+      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   // Get active query states
   const categoryParam = searchParams.get('category') || 'Lighting';
@@ -116,73 +125,96 @@ function ProductsCatalogContent() {
 
       {/* Main Filter & Listing */}
       <section className="py-16 max-w-7xl mx-auto px-6 md:px-8">
-        <div className="flex items-center justify-between mb-8">
+        {/* Search & Clear Filters Container */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <p className="text-xs font-display font-bold text-brand-gray uppercase tracking-wider">
             Showing {filteredProducts.length} Product{filteredProducts.length === 1 ? '' : 's'}
           </p>
+          
+          <div className="flex items-center gap-4 w-full sm:max-w-xs">
+            {/* Search Input */}
+            <div className="relative flex-1">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="w-full pl-10 pr-10 py-2 bg-white border border-brand-border rounded-none text-xs font-display font-bold text-brand-dark focus:outline-none focus:border-brand-red"
+              />
+              <Search className="w-3.5 h-3.5 text-brand-gray absolute left-3.5 top-3" />
+              {searchQuery && (
+                <button
+                  onClick={() => {
+                    setSearchQuery('');
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.delete('q');
+                    router.push(`/products?${params.toString()}`, { scroll: false });
+                  }}
+                  className="absolute right-3 top-2.5 text-brand-gray hover:text-brand-red cursor-pointer"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {(activeSubCategory !== 'All' || searchQuery) && (
+              <button
+                onClick={() => {
+                  router.push(`/products?category=${activeParentCategory}`);
+                }}
+                className="text-xs font-display font-bold text-brand-red hover:underline cursor-pointer whitespace-nowrap"
+              >
+                Clear Filters
+              </button>
+            )}
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
-          {/* Left Sidebar Filters */}
-          <ScrollReveal variant="slide-right" className="w-full lg:row-span-2">
-            <div className="bg-brand-light-gray p-6 rounded-2xl border border-brand-border space-y-6">
-              <div className="flex items-center justify-between border-b border-brand-border pb-4">
-                <span className="font-display font-bold text-sm text-brand-dark flex items-center gap-2">
-                  <SlidersHorizontal className="w-4.5 h-4.5 text-brand-red" /> Filter Controls
-                </span>
-                {(activeSubCategory !== 'All' || searchQuery) && (
-                  <button
-                    onClick={() => {
-                      router.push(`/products?category=${activeParentCategory}`);
-                    }}
-                    className="text-xs font-display font-bold text-brand-red hover:underline cursor-pointer"
-                  >
-                    Clear All
-                  </button>
-                )}
-              </div>
+        {/* Horizontal Category Ribbon with Scroll Arrows */}
+        <ScrollReveal variant="fade-up" className="w-full mb-10">
+          <div className="flex items-center gap-2 border-b border-brand-border/60 pb-6">
+            {/* Left Scroll Arrow */}
+            <button
+              onClick={() => scrollFilters('left')}
+              className="w-8 h-8 rounded-full border border-brand-border flex items-center justify-center bg-white text-brand-gray hover:text-brand-red hover:border-brand-red transition-all shrink-0 cursor-pointer shadow-sm active:scale-95"
+              aria-label="Scroll Left"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
 
-              {/* Search Input */}
-              <div className="space-y-2">
-                <label className="text-xs font-display font-bold text-brand-dark uppercase tracking-wider">
-                  Search Products
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Type to search..."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    className="w-full pl-10 pr-4 py-2.5 bg-white border border-brand-border rounded-lg text-sm text-brand-dark focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red"
-                  />
-                  <Search className="w-4 h-4 text-brand-gray absolute left-3.5 top-3.5" />
-                </div>
-              </div>
-
-              {/* Categories */}
-              <div className="space-y-3">
-                <label className="text-xs font-display font-bold text-brand-dark uppercase tracking-wider block mb-1">
-                  Category Filter
-                </label>
-                <div className="flex flex-wrap lg:flex-col gap-2 max-h-[350px] overflow-y-auto pr-1 scrollbar-thin">
-                  {subCategories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => handleSubCategorySelect(cat)}
-                      className={`px-4 py-2 text-left text-xs font-display font-bold rounded-lg transition-all cursor-pointer w-auto lg:w-full truncate ${
-                        activeSubCategory === cat
-                          ? 'bg-brand-red text-white shadow-sm'
-                          : 'bg-white border border-brand-border text-brand-dark hover:bg-brand-light-gray'
-                      }`}
-                      title={cat}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            {/* Scrollable Ribbon */}
+            <div
+              ref={scrollContainerRef}
+              className="flex-1 overflow-x-auto no-scrollbar flex items-center gap-2.5 scroll-smooth snap-x snap-mandatory"
+            >
+              {subCategories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => handleSubCategorySelect(cat)}
+                  className={`px-5 py-2.5 text-xs font-display font-bold uppercase tracking-wider border transition-all cursor-pointer whitespace-nowrap snap-start rounded-none ${
+                    activeSubCategory === cat
+                      ? 'bg-brand-red border-brand-red text-white shadow-sm'
+                      : 'bg-white border-brand-border text-brand-dark hover:bg-brand-light-gray'
+                  }`}
+                  title={cat}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
-          </ScrollReveal>
+
+            {/* Right Scroll Arrow */}
+            <button
+              onClick={() => scrollFilters('right')}
+              className="w-8 h-8 rounded-full border border-brand-border flex items-center justify-center bg-white text-brand-gray hover:text-brand-red hover:border-brand-red transition-all shrink-0 cursor-pointer shadow-sm active:scale-95"
+              aria-label="Scroll Right"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
 
           {/* Product Items or Empty State */}
           {filteredProducts.length > 0 ? (
@@ -194,7 +226,7 @@ function ProductsCatalogContent() {
                 className="flex"
               >
                 <div
-                  className="bg-white rounded-tr-[32px] rounded-bl-[32px] rounded-tl-md rounded-br-md overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-between group hover:border-brand-red/35 transition-colors duration-300 w-full"
+                  className="bg-white rounded-none overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-between group hover:border-brand-red/35 transition-colors duration-300 w-full"
                 >
                   <div>
                     <div className="relative h-[250px] w-full overflow-hidden bg-brand-light-gray">
@@ -205,7 +237,7 @@ function ProductsCatalogContent() {
                         unoptimized={prod.image.startsWith('http')}
                         className="object-cover group-hover:scale-102 transition-transform duration-500"
                       />
-                      <div className="absolute top-4 left-4 bg-brand-dark text-white text-[9px] font-display font-bold px-3 py-1 rounded-full uppercase tracking-widest">
+                      <div className="absolute top-4 left-4 bg-brand-dark text-white text-[9px] font-display font-bold px-3 py-1 rounded-none uppercase tracking-widest">
                         {prod.category}
                       </div>
                     </div>
@@ -236,7 +268,7 @@ function ProductsCatalogContent() {
                       {/* Technical Specs Trigger */}
                       <button
                         onClick={() => setSelectedProductForSpecs(prod)}
-                        className="w-full mt-4 py-2 border border-brand-border hover:border-brand-red text-brand-dark hover:text-brand-red rounded-lg text-xs font-display font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 bg-brand-light-gray/50 hover:bg-brand-light-gray"
+                        className="w-full mt-4 py-2 border border-brand-border hover:border-brand-red text-brand-dark hover:text-brand-red rounded-none text-xs font-display font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 bg-brand-light-gray/50 hover:bg-brand-light-gray"
                       >
                         Technical Specs
                       </button>
@@ -258,7 +290,7 @@ function ProductsCatalogContent() {
               </ScrollReveal>
             ))
           ) : (
-            <div className="bg-brand-light-gray border border-brand-border rounded-2xl p-12 text-center text-brand-gray md:col-span-1 lg:col-span-2">
+            <div className="bg-brand-light-gray border border-brand-border rounded-none p-12 text-center text-brand-gray sm:col-span-2 lg:col-span-3">
               <p className="text-base font-sans">No products found matching your active filter criteria.</p>
               <button
                 onClick={() => router.push(`/products?category=${activeParentCategory}`)}
@@ -282,29 +314,29 @@ function ProductsCatalogContent() {
             onClick={() => setSelectedProductForSpecs(null)}
           >
             <motion.div
-              initial={{ scale: 0.95, y: 15 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              className="bg-white rounded-2xl w-full max-w-lg max-h-[85vh] overflow-hidden flex flex-col border border-brand-border shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Modal Header */}
-              <div className="flex items-center justify-between border-b border-brand-border p-6 bg-brand-light-gray">
-                <div>
-                  <span className="text-[10px] uppercase tracking-widest font-display font-bold text-brand-red">
-                    {selectedProductForSpecs.category}
-                  </span>
-                  <h3 className="font-display font-bold text-lg text-brand-dark">
-                    {selectedProductForSpecs.name}
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setSelectedProductForSpecs(null)}
-                  className="text-brand-gray hover:text-brand-dark transition-colors cursor-pointer p-1.5 rounded-full hover:bg-brand-border/60"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+               initial={{ scale: 0.95, y: 15 }}
+               animate={{ scale: 1, y: 0 }}
+               exit={{ scale: 0.95, y: 15 }}
+               className="bg-white rounded-none w-full max-w-lg max-h-[85vh] overflow-hidden flex flex-col border border-brand-border shadow-2xl"
+               onClick={(e) => e.stopPropagation()}
+             >
+               {/* Modal Header */}
+               <div className="flex items-center justify-between border-b border-brand-border p-6 bg-brand-light-gray">
+                 <div>
+                   <span className="text-[10px] uppercase tracking-widest font-display font-bold text-brand-red">
+                     {selectedProductForSpecs.category}
+                   </span>
+                   <h3 className="font-display font-bold text-lg text-brand-dark">
+                     {selectedProductForSpecs.name}
+                   </h3>
+                 </div>
+                 <button
+                   onClick={() => setSelectedProductForSpecs(null)}
+                   className="text-brand-gray hover:text-brand-dark transition-colors cursor-pointer p-1.5 rounded-none hover:bg-brand-border/60"
+                 >
+                   <X className="w-5 h-5" />
+                 </button>
+               </div>
 
               {/* Modal Body / Table */}
               <div className="p-6 overflow-y-auto space-y-4 flex-1 scrollbar-thin">
@@ -334,7 +366,7 @@ function ProductsCatalogContent() {
                 </span>
                 <Link
                   href={`/contact?product=${encodeURIComponent(selectedProductForSpecs.name)}`}
-                  className="px-4 py-2 bg-brand-red text-white text-xs font-display font-bold rounded-full hover:bg-brand-red-hover transition-colors"
+                  className="px-4 py-2 bg-brand-red text-white text-xs font-display font-bold rounded-none hover:bg-brand-red-hover transition-colors"
                 >
                   Inquire Now
                 </Link>

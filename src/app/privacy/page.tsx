@@ -62,9 +62,9 @@ export default function PrivacyPolicyPage() {
             4. Corporate Coordinates
           </h3>
           <p>
-            <strong>Email: info@karvinpower.com</strong>
+            <strong>Email: karuna@karvinpower.com</strong>
             <br />
-            <strong>Address: KARVIN Power Systems Pvt. Ltd., Bandra Kurla Complex, Bandra East, Mumbai, Maharashtra 400051</strong>
+            <strong>Address: KARVIN Power Systems Pvt. Ltd., 134, Blue Rose Indl. Est., Off W.E. Highway, Borivali East, Mumbai 400066, Maharashtra, India</strong>
           </p>
         </div>
       </div>

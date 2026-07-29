@@ -95,7 +95,7 @@ function PageTransitionInner() {
           const currentUrl = new URL(window.location.href);
           if (
             targetUrl.origin === currentUrl.origin &&
-            (targetUrl.pathname !== currentUrl.pathname || targetUrl.search !== currentUrl.search)
+            (targetUrl.pathname !== currentUrl.pathname)
           ) {
             loadingStartRef.current = Date.now();
             setIsLoading(true);
@@ -115,7 +115,7 @@ function PageTransitionInner() {
           const currentUrl = new URL(window.location.href);
           if (
             targetUrl.origin === currentUrl.origin &&
-            (targetUrl.pathname !== currentUrl.pathname || targetUrl.search !== currentUrl.search)
+            (targetUrl.pathname !== currentUrl.pathname)
           ) {
             loadingStartRef.current = Date.now();
             setIsLoading(true);
@@ -141,12 +141,12 @@ function PageTransitionInner() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center pointer-events-auto"
+          className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center pointer-events-auto"
         >
           {/* Logo Container with breathing/pulsing animation */}
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ 
+            animate={{
               scale: [0.95, 1.05, 0.95],
               opacity: 1,
             }}
@@ -165,14 +165,13 @@ function PageTransitionInner() {
             <Image
               src="/logo_loader.png"
               alt="KARVIN"
-              width={480}
-              height={160}
+              width={447}
+              height={447}
               priority
-              className="w-80 md:w-[480px] h-auto object-contain"
-              style={{ filter: 'invert(1) hue-rotate(180deg)' }}
+              className="w-60 md:w-80 h-auto object-contain"
             />
             {/* Subtle premium progress line indicator */}
-            <div className="w-32 h-[3px] bg-neutral-900 rounded-full mt-8 overflow-hidden relative">
+            <div className="w-32 h-[3px] bg-neutral-100 rounded-full mt-8 overflow-hidden relative">
               <motion.div
                 className="absolute top-0 bottom-0 left-0 bg-brand-red rounded-full w-12"
                 animate={{

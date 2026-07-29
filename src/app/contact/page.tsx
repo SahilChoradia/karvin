@@ -119,7 +119,7 @@ function ContactFormContent() {
             <ScrollReveal variant="slide-right" delay={0.15}>
               <div className="w-full h-[500px] md:h-[550px] rounded-2xl overflow-hidden border border-brand-border luxury-shadow">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.7818451838634!2d72.8624131!3d19.0732439!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c8ef40000001%3A0xc07a8fe8b56f8f1c!2sBandra%20Kurla%20Complex%2C%20Bandra%20East%2C%20Mumbai%2C%20Maharashtra%20400051!5e0!3m2!1sen!2sin!4v1719398000000!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d236.48425919312433!2d72.8652523596107!3d19.219434795937232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b732f6c2cbc1%3A0x3fa6b46341cdbf9e!2sKarvin%20Power%20Systems%20Pvt%20Ltd!5e0!3m2!1sen!2sin!4v1785327825032!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -140,7 +140,7 @@ function ContactFormContent() {
                   </div>
                   <div className="font-sans text-sm text-brand-gray leading-relaxed">
                     <h4 className="font-display font-bold text-brand-dark">Corporate Office</h4>
-                    <p>Bandra Kurla Complex, Bandra East, Mumbai, Maharashtra 400051</p>
+                    <p>134, Blue Rose Indl. Est., Off W.E. Highway, Borivali East, Mumbai 400066, Maharashtra, India</p>
                   </div>
                 </li>
               </ScrollReveal>
@@ -152,8 +152,8 @@ function ContactFormContent() {
                   </div>
                   <div className="font-sans text-sm text-brand-gray">
                     <h4 className="font-display font-bold text-brand-dark">Direct Call</h4>
-                    <a href="tel:+912212345678" className="hover:text-brand-red transition-colors font-semibold">
-                      +91 22 1234 5678
+                    <a href="tel:+918104065251" className="hover:text-brand-red transition-colors font-semibold">
+                      +91 81040 65251
                     </a>
                   </div>
                 </li>
@@ -166,8 +166,8 @@ function ContactFormContent() {
                   </div>
                   <div className="font-sans text-sm text-brand-gray">
                     <h4 className="font-display font-bold text-brand-dark">Email Routing</h4>
-                    <a href="mailto:info@karvinpower.com" className="hover:text-brand-red transition-colors font-semibold">
-                      info@karvinpower.com
+                    <a href="mailto:karuna@karvinpower.com" className="hover:text-brand-red transition-colors font-semibold">
+                      karuna@karvinpower.com
                     </a>
                   </div>
                 </li>

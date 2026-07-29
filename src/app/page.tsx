@@ -89,7 +89,7 @@ export default function Home() {
 
 
           <ScrollReveal variant="fade-up" duration={2.2} delay={0.45}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 pt-4 font-sans text-xs md:text-sm font-bold tracking-widest text-white/80 uppercase">
+            <div className="flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-6 pt-4 font-sans text-[10px] sm:text-xs md:text-sm font-bold tracking-widest text-white/80 uppercase">
               <Link 
                 href="/products?category=Power+Products" 
                 className="hover:text-brand-red transition-colors duration-300 relative group cursor-pointer py-1"
@@ -97,7 +97,7 @@ export default function Home() {
                 UPS & STABILIZERS
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-red transition-all duration-300 group-hover:w-full" />
               </Link>
-              <span className="hidden sm:inline text-white/30 text-lg select-none">|</span>
+              <span className="text-white/30 text-[10px] md:text-lg select-none">|</span>
               <Link 
                 href="/products?category=Lighting" 
                 className="hover:text-brand-red transition-colors duration-300 relative group cursor-pointer py-1"

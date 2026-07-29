@@ -108,11 +108,11 @@ export default function Header() {
             <Image
               src="/logo.png"
               alt="KARVIN"
-              width={145}
-              height={48}
+              width={230}
+              height={70}
               priority
               className={cn(
-                "h-12 w-auto object-contain transition-all duration-300",
+                "h-9 md:h-12 w-auto object-contain transition-all duration-300",
                 !(isScrolled || activeMegaMenu || pathname !== '/') && "brightness-0 invert"
               )}
             />
@@ -466,9 +466,9 @@ export default function Header() {
                     <Image
                       src="/logo.png"
                       alt="KARVIN"
-                      width={97}
-                      height={32}
-                      className="h-8 w-auto object-contain"
+                      width={230}
+                      height={70}
+                      className="h-10 w-auto object-contain"
                     />
                   </div>
                   <button
@@ -528,11 +528,11 @@ export default function Header() {
               </div>
 
               <div className="space-y-4">
-                <a href="mailto:info@karvinpower.com" className="flex items-center gap-3 text-sm text-brand-gray">
-                  <Mail className="w-4 h-4 text-brand-red" /> info@karvinpower.com
+                 <a href="mailto:karuna@karvinpower.com" className="flex items-center gap-3 text-sm text-brand-gray">
+                  <Mail className="w-4 h-4 text-brand-red" /> karuna@karvinpower.com
                 </a>
-                <a href="tel:+912212345678" className="flex items-center gap-3 text-sm text-brand-gray pb-4">
-                  <Phone className="w-4 h-4 text-brand-red" /> +91 22 1234 5678
+                <a href="tel:+918104065251" className="flex items-center gap-3 text-sm text-brand-gray pb-4">
+                  <Phone className="w-4 h-4 text-brand-red" /> +91 81040 65251
                 </a>
                 <Link href="/contact" className="block">
                   <Button className="w-full">Request Quote</Button>
