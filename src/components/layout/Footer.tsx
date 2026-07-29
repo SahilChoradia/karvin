@@ -72,11 +72,7 @@ export default function Footer() {
                 Lighting Products
               </Link>
             </li>
-            <li>
-              <Link href="/industries" className="text-white/60 hover:text-brand-red text-sm font-medium transition-colors block">
-                Industries Served
-              </Link>
-            </li>
+
             <li>
               <Link href="/services" className="text-white/60 hover:text-brand-red text-sm font-medium transition-colors block">
                 Engineering Services

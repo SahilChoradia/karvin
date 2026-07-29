@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, X, Search, ChevronDown, Phone, Mail, ArrowRight, FileText, Settings, Building, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '@/components/ui/Button';
-import { PRODUCTS, INDUSTRIES, SERVICES, BLOG_POSTS } from '@/lib/data';
+import { PRODUCTS, SERVICES, BLOG_POSTS } from '@/lib/data';
 import { POWER_PRODUCTS } from '@/lib/powerData';
 import { cn } from '@/lib/utils';
 
@@ -17,9 +17,9 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeMegaMenu, setActiveMegaMenu] = useState<'products' | 'industries' | null>(null);
+  const [activeMegaMenu, setActiveMegaMenu] = useState<'products' | null>(null);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
-  const [mobileIndustriesOpen, setMobileIndustriesOpen] = useState(false);
+
 
   // Monitor scroll
   useEffect(() => {
@@ -50,26 +50,24 @@ export default function Header() {
     setActiveMegaMenu(null);
     setSearchQuery('');
     setMobileProductsOpen(false);
-    setMobileIndustriesOpen(false);
   }, [pathname]);
 
   // Reset dropdowns when mobile menu closes
   useEffect(() => {
     if (!mobileMenuOpen) {
       setMobileProductsOpen(false);
-      setMobileIndustriesOpen(false);
     }
   }, [mobileMenuOpen]);
 
   // Search state & filter logic for the entire website
   const getSearchResults = () => {
-    if (!searchQuery) return { products: [], services: [], industries: [], blogs: [] };
+    if (!searchQuery) return { products: [], services: [], blogs: [] };
     const query = searchQuery.toLowerCase();
 
     const matchedProducts = [
       ...PRODUCTS.map(p => ({ ...p, parentCategory: 'Lighting' })),
       ...POWER_PRODUCTS
-    ].filter(p => 
+    ].filter(p =>
       p.name.toLowerCase().includes(query) ||
       p.category.toLowerCase().includes(query) ||
       (p.description && p.description.toLowerCase().includes(query))
@@ -80,10 +78,6 @@ export default function Header() {
       s.description.toLowerCase().includes(query)
     ).slice(0, 3);
 
-    const matchedIndustries = INDUSTRIES.filter(i =>
-      i.name.toLowerCase().includes(query) ||
-      i.description.toLowerCase().includes(query)
-    ).slice(0, 3);
 
     const matchedBlogs = BLOG_POSTS.filter(b =>
       b.title.toLowerCase().includes(query) ||
@@ -93,13 +87,12 @@ export default function Header() {
     return {
       products: matchedProducts,
       services: matchedServices,
-      industries: matchedIndustries,
       blogs: matchedBlogs
     };
   };
 
   const results = getSearchResults();
-  const hasResults = results.products.length > 0 || results.services.length > 0 || results.industries.length > 0 || results.blogs.length > 0;
+  const hasResults = results.products.length > 0 || results.services.length > 0 || results.blogs.length > 0;
 
   return (
     <>
@@ -136,8 +129,8 @@ export default function Header() {
                 pathname === '/'
                   ? 'text-brand-red'
                   : isScrolled || activeMegaMenu || pathname !== '/'
-                  ? 'text-brand-dark'
-                  : 'text-white'
+                    ? 'text-brand-dark'
+                    : 'text-white'
               )}
             >
               Home
@@ -150,8 +143,8 @@ export default function Header() {
                 pathname === '/about'
                   ? 'text-brand-red'
                   : isScrolled || activeMegaMenu || pathname !== '/'
-                  ? 'text-brand-dark'
-                  : 'text-white'
+                    ? 'text-brand-dark'
+                    : 'text-white'
               )}
             >
               About Us
@@ -169,31 +162,11 @@ export default function Header() {
                   pathname.startsWith('/products')
                     ? 'text-brand-red'
                     : isScrolled || activeMegaMenu || pathname !== '/'
-                    ? 'text-brand-dark'
-                    : 'text-white'
+                      ? 'text-brand-dark'
+                      : 'text-white'
                 )}
               >
                 Products <ChevronDown className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Industries Mega Trigger */}
-            <div
-              className="relative"
-              onMouseEnter={() => setActiveMegaMenu('industries')}
-              onMouseLeave={() => setActiveMegaMenu(null)}
-            >
-              <button
-                className={cn(
-                  'font-sans font-semibold text-sm transition-colors hover:text-brand-red flex items-center gap-1 py-2 cursor-pointer',
-                  pathname.startsWith('/industries')
-                    ? 'text-brand-red'
-                    : isScrolled || activeMegaMenu || pathname !== '/'
-                    ? 'text-brand-dark'
-                    : 'text-white'
-                )}
-              >
-                Industries <ChevronDown className="w-4 h-4" />
               </button>
             </div>
 
@@ -204,8 +177,8 @@ export default function Header() {
                 pathname === '/services'
                   ? 'text-brand-red'
                   : isScrolled || activeMegaMenu || pathname !== '/'
-                  ? 'text-brand-dark'
-                  : 'text-white'
+                    ? 'text-brand-dark'
+                    : 'text-white'
               )}
             >
               Services
@@ -220,8 +193,8 @@ export default function Header() {
                 pathname === '/blog'
                   ? 'text-brand-red'
                   : isScrolled || activeMegaMenu || pathname !== '/'
-                  ? 'text-brand-dark'
-                  : 'text-white'
+                    ? 'text-brand-dark'
+                    : 'text-white'
               )}
             >
               Knowledge Hub
@@ -294,7 +267,7 @@ export default function Header() {
               onMouseLeave={() => setActiveMegaMenu(null)}
             >
               <div className="max-w-7xl mx-auto px-8 py-10">
-                {activeMegaMenu === 'products' ? (
+                {activeMegaMenu === 'products' && (
                   <div className="max-w-2xl mx-auto grid grid-cols-2 gap-12">
                     <div className="flex flex-col gap-4 py-2 justify-center">
                       <Link
@@ -326,35 +299,7 @@ export default function Header() {
                       </Link>
                     </div>
                   </div>
-                ) : (
-                  <div className="grid grid-cols-4 gap-8">
-                    <div className="col-span-3 grid grid-cols-2 gap-6">
-                      {INDUSTRIES.map((ind) => (
-                        <Link
-                          key={ind.id}
-                          href={`/industries#${ind.slug}`}
-                          className="group p-4 hover:bg-brand-light-gray rounded-xl transition-all block"
-                        >
-                          <h4 className="font-sans font-bold text-sm text-brand-dark group-hover:text-brand-red transition-colors mb-1">
-                            {ind.name}
-                          </h4>
-                          <p className="text-xs text-brand-gray leading-relaxed line-clamp-2">
-                            {ind.description}
-                          </p>
-                        </Link>
-                      ))}
-                    </div>
-                    <div className="bg-brand-light-gray p-6 rounded-xl flex flex-col justify-between">
-                      <div>
-                        <h4 className="font-display font-bold text-base text-brand-dark mb-2">
-                          ISO 9001 Certified
-                        </h4>
-                        <p className="text-xs text-brand-gray leading-relaxed mb-4">
-                          Adhering to strict testing parameters to verify performance across infrastructure layouts.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+
                 )}
               </div>
             </motion.div>
@@ -383,7 +328,7 @@ export default function Header() {
                 <Search className="w-5 h-5 text-brand-gray" />
                 <input
                   type="text"
-                  placeholder="Search products, industries, services, blogs..."
+                  placeholder="Search products, services, blogs..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full text-brand-dark font-sans text-lg focus:outline-none placeholder:text-gray-400"
@@ -434,31 +379,6 @@ export default function Header() {
                         </div>
                       )}
 
-                      {/* Industries Section */}
-                      {results.industries.length > 0 && (
-                        <div className="space-y-2">
-                          <h6 className="text-xs font-sans font-bold uppercase tracking-wider text-brand-red flex items-center gap-1.5 pb-1.5 border-b border-brand-border/40">
-                            <Building className="w-3.5 h-3.5" /> Industries ({results.industries.length})
-                          </h6>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            {results.industries.map((ind) => (
-                              <Link
-                                key={ind.id}
-                                href={`/industries#${ind.slug}`}
-                                className="flex flex-col p-2.5 hover:bg-brand-light-gray rounded-lg transition-colors group"
-                                onClick={() => setSearchOpen(false)}
-                              >
-                                <h5 className="font-sans font-semibold text-sm text-brand-dark group-hover:text-brand-red transition-colors">
-                                  {ind.name}
-                                </h5>
-                                <p className="text-[11px] text-brand-gray line-clamp-1">
-                                  {ind.description}
-                                </p>
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      )}
 
                       {/* Services Section */}
                       {results.services.length > 0 && (
@@ -600,40 +520,7 @@ export default function Header() {
                     </AnimatePresence>
                   </div>
 
-                  {/* Industries Dropdown */}
-                  <div>
-                    <button
-                      onClick={() => setMobileIndustriesOpen(!mobileIndustriesOpen)}
-                      className="w-full flex items-center justify-between font-sans font-semibold text-lg text-brand-dark hover:text-brand-red border-b border-brand-border/40 py-2 text-left focus:outline-none"
-                    >
-                      <span>Industries</span>
-                      <ChevronDown className={cn("w-5 h-5 transition-transform duration-200 text-brand-gray", mobileIndustriesOpen && "rotate-180 text-brand-red")} />
-                    </button>
-                    <AnimatePresence initial={false}>
-                      {mobileIndustriesOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden pl-4 flex flex-col gap-2 pt-2 pb-1 border-l-2 border-brand-red/20 ml-1 mt-1"
-                        >
-                          <Link href="/industries" className="font-sans font-medium text-base text-brand-gray hover:text-brand-red py-1.5 transition-colors">
-                            All Industries
-                          </Link>
-                          {INDUSTRIES.map((ind) => (
-                            <Link
-                              key={ind.id}
-                              href={`/industries#${ind.slug}`}
-                              className="font-sans font-medium text-base text-brand-gray hover:text-brand-red py-1.5 transition-colors"
-                            >
-                              {ind.name}
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+
                   <Link href="/services" className="font-sans font-semibold text-lg text-brand-dark hover:text-brand-red border-b border-brand-border/40 py-2">
                     Services
                   </Link>
