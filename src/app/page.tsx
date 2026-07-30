@@ -28,6 +28,11 @@ export default function Home() {
     '/images/ss3.jpg'
   ];
 
+  const heroImagesMobile = [
+    '/images/ss1-mobile.jpg',
+    '/images/ss3-mobile.jpg'
+  ];
+
   const [heroImageIdx, setHeroImageIdx] = useState(0);
 
   useEffect(() => {
@@ -63,7 +68,14 @@ export default function Home() {
                 src={heroImages[heroImageIdx]}
                 alt="Premium Lighting Infrastructure"
                 fill
-                className="object-cover"
+                className="hidden md:block object-cover"
+                priority
+              />
+              <Image
+                src={heroImagesMobile[heroImageIdx]}
+                alt="Premium Lighting Infrastructure"
+                fill
+                className="block md:hidden object-cover"
                 priority
               />
             </motion.div>
