@@ -24,10 +24,8 @@ const industryIcons: Record<string, React.ComponentType<{ className?: string }>>
 
 export default function Home() {
   const heroImages = [
-    '/images/illuminate-world.png',
-    '/images/every-light-angle.jpg',
-    '/images/hero-slide-3.jpg',
-    '/images/hero-slide-4.jpg'
+    '/images/ss1.jpg',
+    '/images/ss3.jpg'
   ];
 
   const [heroImageIdx, setHeroImageIdx] = useState(0);
@@ -43,7 +41,7 @@ export default function Home() {
   return (
     <div className="relative w-full">
       {/* 1. Hero Section */}
-      <section className="relative w-full h-[95vh] flex items-center justify-center bg-brand-dark overflow-hidden">
+      <section className="relative w-full min-h-screen flex flex-col justify-between bg-brand-dark overflow-hidden pt-32 pb-0">
         {/* Backdrop Image */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-brand-dark">
           <AnimatePresence mode="popLayout">
@@ -51,7 +49,7 @@ export default function Home() {
               key={heroImageIdx}
               initial={{ opacity: 0, scale: 1 }}
               animate={{ 
-                opacity: 0.75, 
+                opacity: 0.9, 
                 scale: 1.08,
               }}
               exit={{ opacity: 0 }}
@@ -70,13 +68,11 @@ export default function Home() {
               />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/30 to-transparent" />
+          <div className="absolute inset-0 bg-black/20" />
         </div>
 
         {/* Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white space-y-8 flex flex-col items-center">
-
-
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white space-y-8 flex-1 flex flex-col items-center justify-center">
           <ScrollReveal variant="text-mask" duration={2.4} delay={0.1}>
             <h1 className="font-serif font-extrabold text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight max-w-4xl">
               Redefining Energy with <br />
@@ -85,8 +81,6 @@ export default function Home() {
               </span>
             </h1>
           </ScrollReveal>
-
-
 
           <ScrollReveal variant="fade-up" duration={2.2} delay={0.45}>
             <div className="flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-6 pt-4 font-sans text-[10px] sm:text-xs md:text-sm font-bold tracking-widest text-white/80 uppercase">
@@ -107,64 +101,64 @@ export default function Home() {
               </Link>
             </div>
           </ScrollReveal>
+
+          {/* Scroll Indicator */}
+          <div className="flex flex-col items-center gap-2 pt-10">
+            <span className="text-[10px] font-display font-semibold tracking-widest text-white/40 uppercase">
+              Scroll To Explore
+            </span>
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="w-1.5 h-6 bg-white/40 rounded-full"
+            />
+          </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span className="text-[10px] font-display font-semibold tracking-widest text-white/40 uppercase">
-            Scroll To Explore
-          </span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1.5 h-6 bg-white/40 rounded-full"
-          />
-        </div>
-      </section>
-
-      {/* 2. Company Numbers Section */}
-      <section className="bg-brand-dark border-t border-white/5 py-16 text-white">
-        <div className="max-w-7xl mx-auto px-8 grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
-          <ScrollReveal variant="fade-up" delay={0.05} threshold={0.05} className="space-y-2">
-            <h3 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-brand-red">
-              <AnimatedCounter to={20} suffix="+" />
-            </h3>
-            <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold">
-              Years Experience
-            </p>
-          </ScrollReveal>
-          <ScrollReveal variant="fade-up" delay={0.1} threshold={0.05} className="space-y-2">
-            <h3 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-brand-red">
-              <AnimatedCounter to={500} suffix="+" />
-            </h3>
-            <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold">
-              Projects Completed
-            </p>
-          </ScrollReveal>
-          <ScrollReveal variant="fade-up" delay={0.15} threshold={0.05} className="space-y-2">
-            <h3 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-brand-red">
-              <AnimatedCounter to={100} suffix="+" />
-            </h3>
-            <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold">
-              Corporate Clients
-            </p>
-          </ScrollReveal>
-          <ScrollReveal variant="fade-up" delay={0.2} threshold={0.05} className="space-y-2">
-            <h3 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-brand-red">
-              <AnimatedCounter to={50} suffix="+" />
-            </h3>
-            <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold">
-              Project Sites
-            </p>
-          </ScrollReveal>
-          <ScrollReveal variant="fade-up" delay={0.25} threshold={0.05} className="space-y-2 col-span-2 md:col-span-1">
-            <h3 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-brand-red">
-              <AnimatedCounter to={100} suffix="%" />
-            </h3>
-            <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold">
-              Client Satisfaction
-            </p>
-          </ScrollReveal>
+        {/* 2. Company Numbers Section (Moved inside Hero Section at bottom) */}
+        <div className="relative z-10 w-full py-12 text-white mt-12">
+          <div className="max-w-7xl mx-auto px-8 grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
+            <ScrollReveal variant="fade-up" delay={0.05} threshold={0.05} className="space-y-2">
+              <h3 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-white">
+                <AnimatedCounter to={20} suffix="+" delay={3.2} />
+              </h3>
+              <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold">
+                Years Experience
+              </p>
+            </ScrollReveal>
+            <ScrollReveal variant="fade-up" delay={0.1} threshold={0.05} className="space-y-2">
+              <h3 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-white">
+                <AnimatedCounter to={500} suffix="+" delay={3.2} />
+              </h3>
+              <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold">
+                Projects Completed
+              </p>
+            </ScrollReveal>
+            <ScrollReveal variant="fade-up" delay={0.15} threshold={0.05} className="space-y-2">
+              <h3 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-white">
+                <AnimatedCounter to={100} suffix="+" delay={3.2} />
+              </h3>
+              <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold">
+                Corporate Clients
+              </p>
+            </ScrollReveal>
+            <ScrollReveal variant="fade-up" delay={0.2} threshold={0.05} className="space-y-2">
+              <h3 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-white">
+                <AnimatedCounter to={50} suffix="+" delay={3.2} />
+              </h3>
+              <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold">
+                Project Sites
+              </p>
+            </ScrollReveal>
+            <ScrollReveal variant="fade-up" delay={0.25} threshold={0.05} className="space-y-2 col-span-2 md:col-span-1">
+              <h3 className="font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-white">
+                <AnimatedCounter to={100} suffix="%" delay={3.2} />
+              </h3>
+              <p className="text-xs md:text-sm text-white/60 uppercase tracking-wider font-semibold">
+                Client Satisfaction
+              </p>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 

@@ -9,6 +9,7 @@ interface CounterProps {
   duration?: number;
   suffix?: string;
   className?: string;
+  delay?: number;
 }
 
 export default function AnimatedCounter({
@@ -17,6 +18,7 @@ export default function AnimatedCounter({
   duration = 2,
   suffix = '',
   className,
+  delay = 0,
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
@@ -27,13 +29,14 @@ export default function AnimatedCounter({
       const controls = animate(from, to, {
         duration,
         ease: 'easeOut',
+        delay,
         onUpdate: (value) => {
           setCount(Math.floor(value));
         },
       });
       return () => controls.stop();
     }
-  }, [isInView, from, to, duration]);
+  }, [isInView, from, to, duration, delay]);
 
   return (
     <span ref={ref} className={className}>
