@@ -68,13 +68,15 @@ export default function Home() {
                 src={heroImages[heroImageIdx]}
                 alt="Premium Lighting Infrastructure"
                 fill
+                sizes="100vw"
                 className="hidden md:block object-cover"
                 priority
               />
               <Image
                 src={heroImagesMobile[heroImageIdx]}
-                alt="Premium Lighting Infrastructure"
+                alt="Premium Lighting Infrastructure on Mobile"
                 fill
+                sizes="100vw"
                 className="block md:hidden object-cover"
                 priority
               />

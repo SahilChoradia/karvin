@@ -21,8 +21,10 @@ export default function About() {
         <div className="absolute inset-0 opacity-20">
           <Image
             src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1500"
-            alt="About Banner"
+            alt="KARVIN Power Systems Engineering Facility"
             fill
+            priority
+            sizes="100vw"
             className="object-cover"
           />
         </div>
@@ -70,8 +72,9 @@ export default function About() {
           <div className="relative h-[400px] rounded-2xl overflow-hidden border border-brand-border luxury-shadow bg-brand-light-gray">
             <Image
               src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1000"
-              alt="Engineering Lab"
+              alt="KARVIN Power Systems Engineering Lab"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
           </div>
@@ -125,8 +128,9 @@ export default function About() {
           <div className="relative h-[400px] rounded-2xl overflow-hidden border border-brand-border luxury-shadow bg-brand-light-gray">
             <Image
               src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=1000"
-              alt="Quality Testing Facility"
+              alt="KARVIN Quality Testing Facility"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
           </div>

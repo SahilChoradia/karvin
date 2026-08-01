@@ -23,8 +23,10 @@ export default function ServicesPage() {
         <div className="absolute inset-0 opacity-20">
           <Image
             src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1500"
-            alt="Services Banner"
+            alt="KARVIN Engineering Services"
             fill
+            priority
+            sizes="100vw"
             className="object-cover"
           />
         </div>

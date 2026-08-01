@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ShieldCheck, ArrowLeft } from 'lucide-react';
 
 export const metadata = {
-  title: 'Privacy Policy | KARVIN Power Systems',
+  title: 'Privacy Policy',
   description: 'Privacy policy and data protection standards for KARVIN Power Systems Pvt. Ltd.',
 };
 

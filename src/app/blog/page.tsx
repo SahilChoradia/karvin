@@ -4,6 +4,28 @@ import Link from 'next/link';
 import { Clock, User, ArrowRight, BookOpen } from 'lucide-react';
 import { BLOG_POSTS } from '@/lib/data';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Knowledge Hub – Technical Whitepapers & Lighting Guides',
+  description: 'Read technical whitepapers, energy-saving case studies, and LED engineering guides published by KARVIN Power Systems experts. Stay ahead in industrial lighting technology.',
+  alternates: {
+    canonical: '/blog',
+  },
+  openGraph: {
+    title: 'Knowledge Hub | KARVIN Power Systems',
+    description: 'Technical whitepapers, energy-saving case studies, and LED engineering guides from KARVIN Power Systems.',
+    url: 'https://karvinpower.com/blog',
+    images: [
+      {
+        url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1200',
+        width: 1200,
+        height: 630,
+        alt: 'KARVIN Knowledge Hub',
+      },
+    ],
+  },
+};
 
 export default function BlogListingPage() {
   return (
@@ -13,8 +35,10 @@ export default function BlogListingPage() {
         <div className="absolute inset-0 opacity-20">
           <Image
             src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1500"
-            alt="Knowledge Hub Banner"
+            alt="KARVIN Knowledge Hub"
             fill
+            priority
+            sizes="100vw"
             className="object-cover"
           />
         </div>
@@ -47,6 +71,7 @@ export default function BlogListingPage() {
                       src={post.image}
                       alt={post.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover group-hover:scale-102 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4 bg-brand-dark text-white text-[10px] font-display font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider">

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FileText, ArrowLeft } from 'lucide-react';
 
 export const metadata = {
-  title: 'Terms of Use | KARVIN Power Systems',
+  title: 'Terms of Use',
   description: 'Terms of use and service conditions for KARVIN Power Systems Pvt. Ltd.',
 };
 

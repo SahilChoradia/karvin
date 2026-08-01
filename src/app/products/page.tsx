@@ -104,8 +104,10 @@ function ProductsCatalogContent() {
         <div className="absolute inset-0 opacity-15">
           <Image
             src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1500"
-            alt="Products Catalog Banner"
+            alt="KARVIN Products Catalog"
             fill
+            priority
+            sizes="100vw"
             className="object-cover"
           />
         </div>

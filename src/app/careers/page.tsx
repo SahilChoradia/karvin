@@ -110,8 +110,10 @@ export default function CareersPage() {
         <div className="absolute inset-0 opacity-20">
           <Image
             src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1500"
-            alt="Careers Banner"
+            alt="KARVIN Power Systems Careers"
             fill
+            priority
+            sizes="100vw"
             className="object-cover"
           />
         </div>
