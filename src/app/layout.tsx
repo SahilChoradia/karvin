@@ -22,7 +22,7 @@ const libreBaskerville = Libre_Baskerville({
 
 export const metadata: Metadata = {
   title: {
-    default: 'KARVIN Power Systems | Premium LED Lighting Solutions',
+    default: 'KARVIN | Redefining Energy',
     template: '%s | KARVIN Power Systems',
   },
   description: 'KARVIN Power Systems Pvt. Ltd. delivers professional LED lighting solutions and turnkey engineering services for commercial, industrial, and public infrastructure projects.',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'KARVIN Power Systems | Premium LED Lighting Solutions',
+    title: 'KARVIN | Redefining Energy',
     description: 'Professional LED lighting solutions and custom engineering capabilities for commercial, industrial, and infrastructure projects.',
     url: 'https://karvinpower.com',
     siteName: 'KARVIN Power Systems',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KARVIN Power Systems | Premium LED Lighting Solutions',
+    title: 'KARVIN | Redefining Energy',
     description: 'Professional LED lighting solutions and custom engineering capabilities for commercial, industrial, and infrastructure projects.',
     images: ['https://images.unsplash.com/photo-1540959733332-eab4deceeaf7?auto=format&fit=crop&q=80&w=1200'],
   },
