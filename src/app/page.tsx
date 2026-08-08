@@ -35,16 +35,65 @@ export default function Home() {
 
   const [heroImageIdx, setHeroImageIdx] = useState(0);
   const [industrySlide, setIndustrySlide] = useState(0);
+  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+  const carouselRef = React.useRef<HTMLDivElement>(null);
 
   const itemsPerSlide = 2;
   const totalIndustrySlides = Math.ceil(INDUSTRIES.length / itemsPerSlide);
 
+  const scrollToIndex = (index: number) => {
+    if (carouselRef.current) {
+      const container = carouselRef.current;
+      const child = container.children[index] as HTMLElement;
+      if (child) {
+        const scrollLeft = child.offsetLeft - container.offsetLeft;
+        container.scrollTo({
+          left: scrollLeft,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
   const nextIndustrySlide = () => {
-    setIndustrySlide((prev) => (prev + 1) % totalIndustrySlides);
+    if (typeof window !== 'undefined' && window.innerWidth < 768 && carouselRef.current) {
+      const nextIdx = (mobileActiveIndex + 1) % INDUSTRIES.length;
+      scrollToIndex(nextIdx);
+    } else {
+      setIndustrySlide((prev) => (prev + 1) % totalIndustrySlides);
+    }
   };
 
   const prevIndustrySlide = () => {
-    setIndustrySlide((prev) => (prev - 1 + totalIndustrySlides) % totalIndustrySlides);
+    if (typeof window !== 'undefined' && window.innerWidth < 768 && carouselRef.current) {
+      const prevIdx = (mobileActiveIndex - 1 + INDUSTRIES.length) % INDUSTRIES.length;
+      scrollToIndex(prevIdx);
+    } else {
+      setIndustrySlide((prev) => (prev - 1 + totalIndustrySlides) % totalIndustrySlides);
+    }
+  };
+
+  const handleMobileScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 768) return;
+    const container = e.currentTarget;
+    const scrollLeft = container.scrollLeft;
+    
+    let closestIndex = 0;
+    let minDiff = Infinity;
+    
+    Array.from(container.children).forEach((child, i) => {
+      const childElement = child as HTMLElement;
+      const childLeft = childElement.offsetLeft - container.offsetLeft;
+      const diff = Math.abs(scrollLeft - childLeft);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestIndex = i;
+      }
+    });
+    
+    if (closestIndex !== mobileActiveIndex) {
+      setMobileActiveIndex(closestIndex);
+    }
   };
 
   useEffect(() => {
@@ -63,7 +112,7 @@ export default function Home() {
 
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full overflow-x-clip">
       {/* 1. Hero Section */}
       <section className="relative w-full min-h-screen flex flex-col justify-between bg-brand-dark overflow-hidden pt-32 pb-0">
         {/* Backdrop Image */}
@@ -330,8 +379,11 @@ export default function Home() {
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <span className="text-xs font-mono font-bold text-brand-dark/60 px-2 select-none">
+              <span className="text-xs font-mono font-bold text-brand-dark/60 px-2 select-none max-md:hidden">
                 0{industrySlide + 1} / 0{totalIndustrySlides}
+              </span>
+              <span className="text-xs font-mono font-bold text-brand-dark/60 px-2 select-none md:hidden">
+                0{mobileActiveIndex + 1} / 0{INDUSTRIES.length}
               </span>
               <button
                 onClick={nextIndustrySlide}
@@ -343,27 +395,29 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative pt-8 group/carousel overflow-hidden">
+          <div className="relative pt-8 group/carousel overflow-hidden max-md:overflow-visible">
             {/* Side Floating Arrow Buttons */}
             <button
               onClick={prevIndustrySlide}
               aria-label="Previous Slide"
-              className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md text-brand-dark shadow-2xl hover:bg-brand-red hover:text-white border border-brand-border flex items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer"
+              className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md text-brand-dark shadow-2xl hover:bg-brand-red hover:text-white border border-brand-border flex items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer max-md:hidden"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={nextIndustrySlide}
               aria-label="Next Slide"
-              className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md text-brand-dark shadow-2xl hover:bg-brand-red hover:text-white border border-brand-border flex items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer"
+              className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md text-brand-dark shadow-2xl hover:bg-brand-red hover:text-white border border-brand-border flex items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer max-md:hidden"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
 
             {/* Sliding Flex Track Rendering ALL 4 Cards */}
-            <div className="overflow-hidden w-full">
+            <div className="overflow-hidden w-full max-md:overflow-visible">
               <div 
-                className="flex transition-transform duration-500 ease-in-out -mx-3 md:-mx-4"
+                ref={carouselRef}
+                onScroll={handleMobileScroll}
+                className="flex md:transition-transform md:duration-500 md:ease-in-out md:-mx-4 max-md:overflow-x-auto max-md:snap-x max-md:snap-mandatory max-md:[transform:none!important] max-md:overscroll-x-contain max-md:-mx-6 max-md:px-6 max-md:pb-8 max-md:gap-4 max-md:[&::-webkit-scrollbar]:hidden max-md:[scrollbar-width:none] max-md:[-ms-overflow-style:none]"
                 style={{ transform: `translateX(-${industrySlide * 100}%)` }}
               >
                 {INDUSTRIES.map((ind) => {
@@ -371,7 +425,7 @@ export default function Home() {
                   return (
                     <div 
                       key={ind.id}
-                      className="w-full sm:w-1/2 shrink-0 px-3 md:px-4"
+                      className="shrink-0 md:w-1/2 md:px-4 max-md:flex-[0_0_88%] max-md:w-[88%] max-md:max-w-[88%] max-md:snap-start max-md:px-0"
                     >
                       <div 
                         className="group relative h-[380px] md:h-[420px] rounded-none overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-end p-6 md:p-8 w-full cursor-default transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:border-brand-red/30"
@@ -418,16 +472,32 @@ export default function Home() {
 
             {/* Pagination Dots */}
             <div className="flex justify-center items-center gap-2 pt-8">
-              {Array.from({ length: totalIndustrySlides }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setIndustrySlide(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                    industrySlide === i ? 'w-8 bg-brand-red' : 'w-2 bg-gray-300 hover:bg-gray-400'
-                  }`}
-                />
-              ))}
+              {/* Desktop Dots */}
+              <div className="max-md:hidden flex justify-center items-center gap-2">
+                {Array.from({ length: totalIndustrySlides }).map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setIndustrySlide(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                      industrySlide === i ? 'w-8 bg-brand-red' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                    }`}
+                  />
+                ))}
+              </div>
+              {/* Mobile Dots */}
+              <div className="md:hidden flex justify-center items-center gap-2">
+                {INDUSTRIES.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => scrollToIndex(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                      mobileActiveIndex === i ? 'w-8 bg-brand-red' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
