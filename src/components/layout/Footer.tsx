@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, Phone, MapPin, Linkedin, Facebook, Twitter } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Facebook } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -43,15 +43,6 @@ export default function Footer() {
               aria-label="Facebook"
             >
               <Facebook className="w-4 h-4" />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-full bg-white/5 hover:bg-brand-red text-white/70 hover:text-white transition-colors cursor-pointer"
-              aria-label="Twitter"
-            >
-              <Twitter className="w-4 h-4" />
             </a>
           </div>
         </div>

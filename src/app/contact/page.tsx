@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Mail, Phone, MapPin, Clock, Send, Check, Facebook, Linkedin, Twitter, Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, Check, Facebook, Linkedin } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Input';
 import { submitContactForm } from '@/app/actions/contact';
@@ -104,7 +104,7 @@ function ContactFormContent() {
       {/* Split layout */}
       <section className="py-20 max-w-7xl mx-auto px-6 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          
+
           {/* Left Column: Coordinates */}
           <div className="lg:col-span-7 space-y-10">
             <div className="space-y-4">
@@ -194,7 +194,7 @@ function ContactFormContent() {
                 </h4>
                 <div className="flex items-center gap-4">
                   <a
-                    href="https://linkedin.com"
+                    href="https://www.linkedin.com/in/karvinpower/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-gray hover:bg-brand-red hover:text-white hover:border-brand-red transition-all shadow-sm"
@@ -202,29 +202,14 @@ function ContactFormContent() {
                     <Linkedin className="w-4 h-4" />
                   </a>
                   <a
-                    href="https://facebook.com"
+                    href="https://www.facebook.com/karvinpower/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-gray hover:bg-brand-red hover:text-white hover:border-brand-red transition-all shadow-sm"
                   >
                     <Facebook className="w-4 h-4" />
                   </a>
-                  <a
-                    href="https://twitter.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-gray hover:bg-brand-red hover:text-white hover:border-brand-red transition-all shadow-sm"
-                  >
-                    <Twitter className="w-4 h-4" />
-                  </a>
-                  <a
-                    href="https://instagram.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-gray hover:bg-brand-red hover:text-white hover:border-brand-red transition-all shadow-sm"
-                  >
-                    <Instagram className="w-4 h-4" />
-                  </a>
+
                 </div>
               </div>
             </ScrollReveal>
