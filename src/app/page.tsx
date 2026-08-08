@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Factory, Building2, Hotel, 
   CheckCircle2, ArrowRight,
-  Compass, Building
+  Compass, Building, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
@@ -34,6 +34,18 @@ export default function Home() {
   ];
 
   const [heroImageIdx, setHeroImageIdx] = useState(0);
+  const [industrySlide, setIndustrySlide] = useState(0);
+
+  const itemsPerSlide = 2;
+  const totalIndustrySlides = Math.ceil(INDUSTRIES.length / itemsPerSlide);
+
+  const nextIndustrySlide = () => {
+    setIndustrySlide((prev) => (prev + 1) % totalIndustrySlides);
+  };
+
+  const prevIndustrySlide = () => {
+    setIndustrySlide((prev) => (prev - 1 + totalIndustrySlides) % totalIndustrySlides);
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -41,6 +53,13 @@ export default function Home() {
     }, 7000); // 7 seconds per slide
     return () => clearInterval(timer);
   }, [heroImages.length]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndustrySlide((prev) => (prev + 1) % totalIndustrySlides);
+    }, 10000); // Auto-scroll every 10 seconds
+    return () => clearInterval(timer);
+  }, [totalIndustrySlides]);
 
 
   return (
@@ -285,7 +304,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. Industries We Serve */}
+      {/* 5. Industries We Serve - Carousel Slider (2 cards per slide) */}
       <section className="py-24 bg-white border-t border-brand-border overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-brand-border/40 pb-8">
@@ -301,58 +320,115 @@ export default function Home() {
                 </h2>
               </ScrollReveal>
             </div>
+
+            {/* Navigation Arrow Controls */}
+            <div className="flex items-center gap-3 self-start md:self-end">
+              <button
+                onClick={prevIndustrySlide}
+                aria-label="Previous Slide"
+                className="w-11 h-11 rounded-full border border-brand-dark/20 flex items-center justify-center text-brand-dark hover:bg-brand-red hover:text-white hover:border-brand-red transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <span className="text-xs font-mono font-bold text-brand-dark/60 px-2 select-none">
+                0{industrySlide + 1} / 0{totalIndustrySlides}
+              </span>
+              <button
+                onClick={nextIndustrySlide}
+                aria-label="Next Slide"
+                className="w-11 h-11 rounded-full border border-brand-dark/20 flex items-center justify-center text-brand-dark hover:bg-brand-red hover:text-white hover:border-brand-red transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
-          <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4 pb-6 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 snap-x snap-mandatory no-scrollbar scroll-smooth">
-            {INDUSTRIES.map((ind, idx) => {
-              const IconComp = industryIcons[ind.iconName] || Building;
-              return (
-                <ScrollReveal 
-                  key={ind.id} 
-                  variant={idx % 4 < 2 ? 'slide-right' : 'slide-left'} 
-                  delay={idx * 0.08}
-                  className="flex shrink-0 w-[85vw] sm:w-[320px] md:w-auto snap-center md:snap-none"
-                >
-                  <div 
-                    className="group relative h-[380px] rounded-none overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-end p-6 w-full cursor-default transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:border-brand-red/30"
-                  >
-                    <div className="absolute inset-0 z-0">
-                      <Image
-                        src={ind.image}
-                        alt={ind.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent transition-all duration-300 group-hover:from-brand-dark group-hover:via-brand-dark/85" />
-                    </div>
-                    <div className="relative z-10 space-y-3 text-white transition-transform duration-300">
-                      <div className="w-10 h-10 bg-white/15 backdrop-blur-md rounded-lg flex items-center justify-center text-white border border-white/10 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300">
-                        <IconComp className="w-5 h-5" />
-                      </div>
-                      <h3 className="font-display font-bold text-lg leading-snug">
-                        {ind.name}
-                      </h3>
+          <div className="relative pt-8 group/carousel overflow-hidden">
+            {/* Side Floating Arrow Buttons */}
+            <button
+              onClick={prevIndustrySlide}
+              aria-label="Previous Slide"
+              className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md text-brand-dark shadow-2xl hover:bg-brand-red hover:text-white border border-brand-border flex items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={nextIndustrySlide}
+              aria-label="Next Slide"
+              className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/95 backdrop-blur-md text-brand-dark shadow-2xl hover:bg-brand-red hover:text-white border border-brand-border flex items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
 
-                      {/* Products List revealed on hover */}
-                      <div className="max-h-0 overflow-hidden opacity-0 group-hover:max-h-[140px] group-hover:opacity-100 transition-all duration-500 ease-out space-y-2">
-                        <div className="w-8 h-[2px] bg-brand-red rounded mt-2" />
-                        <p className="text-[10px] uppercase tracking-widest text-brand-red font-extrabold">
-                          Recommended Products
-                        </p>
-                        <ul className="space-y-1 text-xs text-brand-light-gray/90 font-display">
-                          {ind.recommendedProducts.map((prod, pIdx) => (
-                            <li key={pIdx} className="flex items-center gap-2">
-                              <span className="w-1 h-1 rounded-full bg-brand-red shrink-0" />
-                              <span className="truncate">{prod}</span>
-                            </li>
-                          ))}
-                        </ul>
+            {/* Sliding Flex Track Rendering ALL 4 Cards */}
+            <div className="overflow-hidden w-full">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out -mx-3 md:-mx-4"
+                style={{ transform: `translateX(-${industrySlide * 100}%)` }}
+              >
+                {INDUSTRIES.map((ind) => {
+                  const IconComp = industryIcons[ind.iconName] || Building;
+                  return (
+                    <div 
+                      key={ind.id}
+                      className="w-full sm:w-1/2 shrink-0 px-3 md:px-4"
+                    >
+                      <div 
+                        className="group relative h-[380px] md:h-[420px] rounded-none overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-end p-6 md:p-8 w-full cursor-default transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:border-brand-red/30"
+                      >
+                        <div className="absolute inset-0 z-0">
+                          <Image
+                            src={ind.image}
+                            alt={ind.name}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent transition-all duration-300 group-hover:from-brand-dark group-hover:via-brand-dark/85" />
+                        </div>
+                        <div className="relative z-10 space-y-3 text-white transition-transform duration-300">
+                          <div className="w-11 h-11 bg-white/15 backdrop-blur-md rounded-lg flex items-center justify-center text-white border border-white/10 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300">
+                            <IconComp className="w-6 h-6" />
+                          </div>
+                          <h3 className="font-display font-bold text-xl md:text-2xl leading-snug">
+                            {ind.name}
+                          </h3>
+
+                          {/* Products List revealed on hover */}
+                          <div className="max-h-0 overflow-hidden opacity-0 group-hover:max-h-[140px] group-hover:opacity-100 transition-all duration-500 ease-out space-y-2">
+                            <div className="w-8 h-[2px] bg-brand-red rounded mt-2" />
+                            <p className="text-[10px] uppercase tracking-widest text-brand-red font-extrabold">
+                              Recommended Products
+                            </p>
+                            <ul className="space-y-1 text-xs text-brand-light-gray/90 font-display">
+                              {ind.recommendedProducts.map((prod, pIdx) => (
+                                <li key={pIdx} className="flex items-center gap-2">
+                                  <span className="w-1 h-1 rounded-full bg-brand-red shrink-0" />
+                                  <span className="truncate">{prod}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </ScrollReveal>
-              );
-            })}
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Pagination Dots */}
+            <div className="flex justify-center items-center gap-2 pt-8">
+              {Array.from({ length: totalIndustrySlides }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setIndustrySlide(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    industrySlide === i ? 'w-8 bg-brand-red' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
