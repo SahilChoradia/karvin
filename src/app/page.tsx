@@ -46,10 +46,10 @@ export default function Home() {
       const container = carouselRef.current;
       const child = container.children[index] as HTMLElement;
       if (child) {
-        const scrollLeft = child.offsetLeft - container.offsetLeft;
-        container.scrollTo({
-          left: scrollLeft,
-          behavior: 'smooth'
+        child.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
         });
       }
     }
@@ -76,15 +76,17 @@ export default function Home() {
   const handleMobileScroll = (e: React.UIEvent<HTMLDivElement>) => {
     if (typeof window !== 'undefined' && window.innerWidth >= 768) return;
     const container = e.currentTarget;
-    const scrollLeft = container.scrollLeft;
     
     let closestIndex = 0;
     let minDiff = Infinity;
     
+    const containerRect = container.getBoundingClientRect();
+    const containerCenter = containerRect.left + containerRect.width / 2;
+    
     Array.from(container.children).forEach((child, i) => {
-      const childElement = child as HTMLElement;
-      const childLeft = childElement.offsetLeft - container.offsetLeft;
-      const diff = Math.abs(scrollLeft - childLeft);
+      const childRect = (child as HTMLElement).getBoundingClientRect();
+      const childCenter = childRect.left + childRect.width / 2;
+      const diff = Math.abs(childCenter - containerCenter);
       if (diff < minDiff) {
         minDiff = diff;
         closestIndex = i;
@@ -105,10 +107,23 @@ export default function Home() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setIndustrySlide((prev) => (prev + 1) % totalIndustrySlides);
+      if (typeof window !== 'undefined' && window.innerWidth < 768 && carouselRef.current) {
+        const nextIdx = (mobileActiveIndex + 1) % INDUSTRIES.length;
+        const container = carouselRef.current;
+        const child = container.children[nextIdx] as HTMLElement;
+        if (child) {
+          child.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+          });
+        }
+      } else {
+        setIndustrySlide((prev) => (prev + 1) % totalIndustrySlides);
+      }
     }, 10000); // Auto-scroll every 10 seconds
     return () => clearInterval(timer);
-  }, [totalIndustrySlides]);
+  }, [totalIndustrySlides, mobileActiveIndex]);
 
 
   return (
@@ -417,7 +432,7 @@ export default function Home() {
               <div 
                 ref={carouselRef}
                 onScroll={handleMobileScroll}
-                className="flex md:transition-transform md:duration-500 md:ease-in-out md:-mx-4 max-md:overflow-x-auto max-md:snap-x max-md:snap-mandatory max-md:[transform:none!important] max-md:overscroll-x-contain max-md:-mx-6 max-md:px-6 max-md:pb-8 max-md:gap-4 max-md:[&::-webkit-scrollbar]:hidden max-md:[scrollbar-width:none] max-md:[-ms-overflow-style:none]"
+                className="flex md:transition-transform md:duration-500 md:ease-in-out md:-mx-4 max-md:overflow-x-auto max-md:snap-x max-md:snap-mandatory max-md:[transform:none!important] max-md:overscroll-x-contain max-md:-mx-6 max-md:px-4 max-md:pb-8 max-md:gap-4 max-md:[&::-webkit-scrollbar]:hidden max-md:[scrollbar-width:none] max-md:[-ms-overflow-style:none]"
                 style={{ transform: `translateX(-${industrySlide * 100}%)` }}
               >
                 {INDUSTRIES.map((ind) => {
@@ -425,7 +440,7 @@ export default function Home() {
                   return (
                     <div 
                       key={ind.id}
-                      className="shrink-0 md:w-1/2 md:px-4 max-md:flex-[0_0_88%] max-md:w-[88%] max-md:max-w-[88%] max-md:snap-start max-md:px-0"
+                      className="shrink-0 md:w-1/2 md:px-4 max-md:flex-[0_0_calc(100%-32px)] max-md:w-[calc(100%-32px)] max-md:max-w-[calc(100%-32px)] max-md:snap-center max-md:px-0"
                     >
                       <div 
                         className="group relative h-[380px] md:h-[420px] rounded-none overflow-hidden border border-brand-border luxury-shadow flex flex-col justify-end p-6 md:p-8 w-full cursor-default transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:border-brand-red/30"
@@ -435,6 +450,7 @@ export default function Home() {
                             src={ind.image}
                             alt={ind.name}
                             fill
+                            priority
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/50 to-transparent transition-all duration-300 group-hover:from-brand-dark group-hover:via-brand-dark/85" />
