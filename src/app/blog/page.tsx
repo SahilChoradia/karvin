@@ -5,6 +5,7 @@ import { Clock, User, ArrowRight, BookOpen } from 'lucide-react';
 import { BLOG_POSTS } from '@/lib/data';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import type { Metadata } from 'next';
+import NewsletterForm from '@/components/sections/NewsletterForm';
 
 export const metadata: Metadata = {
   title: 'Knowledge Hub – Technical Whitepapers & Lighting Guides',
@@ -128,16 +129,7 @@ export default function BlogListingPage() {
           </ScrollReveal>
 
           <ScrollReveal variant="fade-up" delay={0.3}>
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter corporate email..."
-                className="px-4 py-3 bg-white border border-brand-border rounded-lg text-sm text-brand-dark w-full focus:outline-none focus:border-brand-red focus:ring-1 focus:ring-brand-red"
-              />
-              <button className="bg-brand-dark hover:bg-brand-gray text-white font-display font-semibold text-sm px-6 py-3 rounded-lg w-full sm:w-auto transition-colors cursor-pointer whitespace-nowrap">
-                Subscribe
-              </button>
-            </div>
+            <NewsletterForm />
           </ScrollReveal>
         </div>
       </section>

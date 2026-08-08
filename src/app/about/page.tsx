@@ -123,33 +123,21 @@ export default function About() {
       </section>
 
       {/* 4. Infrastructure & Quality Process */}
-      <section className="py-20 max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <ScrollReveal variant="slide-right" duration={2.2} className="order-last lg:order-first">
-          <div className="relative h-[400px] rounded-2xl overflow-hidden border border-brand-border luxury-shadow bg-brand-light-gray">
-            <Image
-              src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=1000"
-              alt="KARVIN Quality Testing Facility"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-          </div>
-        </ScrollReveal>
-
+      <section className="py-20 max-w-3xl mx-auto px-6 md:px-8">
         <div className="space-y-6">
-          <ScrollReveal variant="text-mask-right">
+          <ScrollReveal variant="text-mask-left">
             <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
               Manufacturing Setup
             </h4>
           </ScrollReveal>
-          <ScrollReveal variant="text-mask-right" delay={0.1}>
+          <ScrollReveal variant="text-mask-left" delay={0.1}>
             <h2 className="font-serif font-black text-3xl text-brand-dark leading-tight">
               State of the Art Facilities & Testing Chambers.
             </h2>
           </ScrollReveal>
 
 
-          <ScrollReveal variant="slide-left" delay={0.3}>
+          <ScrollReveal variant="slide-right" delay={0.3}>
             <ul className="space-y-3 font-sans">
               <li className="flex items-center gap-3 text-sm text-brand-gray">
                 <span className="p-1 rounded bg-brand-red/10 text-brand-red shrink-0"><Check className="w-4 h-4" /></span>

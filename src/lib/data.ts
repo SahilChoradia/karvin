@@ -24797,7 +24797,7 @@ export const INDUSTRIES: Industry[] = [
       'Integrating smart NEMA 7-pin nodes for automated remote monitoring'
     ],
     recommendedProducts: ['Via Smart Highway Street Light', 'Kronos High-Output Flood Light'],
-    image: 'https://images.unsplash.com/photo-1540959733332-eab4deceeaf7?auto=format&fit=crop&q=80&w=800'
+    image: '/images/infrastructure-highways.png'
   }
 ];
 

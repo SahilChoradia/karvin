@@ -38,7 +38,7 @@ export default function ServicesPage() {
           </ScrollReveal>
           <ScrollReveal variant="text-mask-left" delay={0.1}>
             <h1 className="font-serif font-black text-4xl md:text-6xl text-white">
-              Engineering Services
+              ANY BRAND | ANY MACHINE - WE ARE READY
             </h1>
           </ScrollReveal>
 
@@ -110,24 +110,35 @@ export default function ServicesPage() {
       {/* AMC / Maintenance Section */}
       <section className="py-20 bg-brand-light-gray border-t border-brand-border">
         <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <ScrollReveal variant="slide-right" duration={2.2} className="order-last lg:order-first">
+            <div className="relative h-[400px] rounded-2xl overflow-hidden border border-brand-border luxury-shadow bg-brand-light-gray">
+              <Image
+                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1000"
+                alt="Engineering support team"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </ScrollReveal>
+
           <div className="space-y-6">
-            <ScrollReveal variant="text-mask-left">
+            <ScrollReveal variant="text-mask-right">
               <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-red">
                 Maintenance Contracts
               </h4>
             </ScrollReveal>
-            <ScrollReveal variant="text-mask-left" delay={0.1}>
+            <ScrollReveal variant="text-mask-right" delay={0.1}>
               <h2 className="font-serif font-black text-3xl text-brand-dark leading-tight">
                 Semi Comprehensive Annual Maintenance Contracts (AMC) & System Support.
               </h2>
             </ScrollReveal>
-            <ScrollReveal variant="slide-right" delay={0.2}>
+            <ScrollReveal variant="slide-left" delay={0.2}>
               <p className="text-sm md:text-base text-brand-gray leading-relaxed font-sans">
                 For high-demand factories, warehousing complexes, and municipal street lighting, lighting failures represent high logistics risks and safety hazards. We offer customized Annual Maintenance Contracts (AMC) that guarantee on-site support, prompt replacement components, and continuous safety testing.
               </p>
             </ScrollReveal>
 
-            <ScrollReveal variant="slide-right" delay={0.35}>
+            <ScrollReveal variant="slide-left" delay={0.35}>
               <ul className="space-y-3 font-sans text-sm text-brand-gray">
                 <li className="flex items-center gap-3">
                   <span className="p-0.5 rounded bg-brand-red/10 text-brand-red shrink-0"><Check className="w-4 h-4" /></span>
@@ -148,23 +159,12 @@ export default function ServicesPage() {
               </ul>
             </ScrollReveal>
 
-            <ScrollReveal variant="slide-right" delay={0.45} className="pt-2">
+            <ScrollReveal variant="slide-left" delay={0.45} className="pt-2">
               <Link href="/contact">
                 <Button>Inquire About AMC Plans</Button>
               </Link>
             </ScrollReveal>
           </div>
-
-          <ScrollReveal variant="slide-left" duration={2.2}>
-            <div className="relative h-[400px] rounded-2xl overflow-hidden border border-brand-border luxury-shadow bg-brand-light-gray">
-              <Image
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1000"
-                alt="Engineering support team"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </ScrollReveal>
         </div>
       </section>
 
