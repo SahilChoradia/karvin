@@ -21,15 +21,18 @@ export default function AnimatedCounter({
   delay = 0,
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const isInView = useInView(ref, { once: true });
   const [count, setCount] = useState(from);
+  const mountTimeRef = useRef<number>(Date.now());
 
   useEffect(() => {
     if (isInView) {
+      const elapsed = (Date.now() - mountTimeRef.current) / 1000;
+      const actualDelay = Math.max(0, delay - elapsed);
       const controls = animate(from, to, {
         duration,
         ease: 'easeOut',
-        delay,
+        delay: actualDelay,
         onUpdate: (value) => {
           setCount(Math.floor(value));
         },
